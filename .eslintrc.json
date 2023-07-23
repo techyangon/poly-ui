@@ -1,0 +1,97 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "plugin:react/jsx-runtime",
+    "plugin:react/recommended",
+    "plugin:@tanstack/eslint-plugin-query/recommended",
+    "plugin:@typescript-eslint/recommended-type-checked",
+    "plugin:@typescript-eslint/stylistic-type-checked"
+  ],
+  "overrides": [],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "project": true,
+    "sourceType": "module",
+    "tsConfigRootDir": "__dirname"
+  },
+  "plugins": ["import", "react", "@tanstack/query", "@typescript-eslint"],
+  "ignorePatterns": ["vite.config.ts"],
+  "rules": {
+    "@typescript-eslint/no-var-requires": "error",
+    "import/no-cycle": "error",
+    "import/no-unresolved": "error",
+    "import/newline-after-import": "error",
+    "import/order": [
+      "error",
+      {
+        "alphabetize": {
+          "caseInsensitive": true,
+          "order": "asc"
+        },
+        "groups": ["builtin", "external", "parent", "sibling", "index", "type"],
+        "newlines-between": "always",
+        "pathGroups": [
+          {
+            "pattern": "react+(|-**)",
+            "group": "builtin",
+            "position": "before"
+          },
+          {
+            "pattern": "@mui/**",
+            "group": "external",
+            "position": "after"
+          },
+          {
+            "pattern": "@/**",
+            "group": "external",
+            "position": "after"
+          },
+          {
+            "pattern": "./**.tsx",
+            "group": "type",
+            "position": "before"
+          }
+          {
+            "pattern": "./**.scss",
+            "group": "sibling",
+            "position": "after"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react", "type"]
+      }
+    ],
+    "react/react-in-jsx-scope": "off",
+    "sort-imports": [
+      "error",
+      {
+        "ignoreDeclarationSort": true,
+        "memberSyntaxSortOrder": ["none", "all", "single", "multiple"]
+      }
+    ]
+  },
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "alias": {
+        "map": [
+          ["@", "./src"],
+          ["test-utils", "./utils/test-utils"]
+        ]
+      },
+      "typescript": true,
+      "node": true
+    },
+    "react": {
+      "version": "detect"
+    }
+  }
+}
