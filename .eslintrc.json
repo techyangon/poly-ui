@@ -57,7 +57,7 @@
             "pattern": "./**.tsx",
             "group": "type",
             "position": "before"
-          }
+          },
           {
             "pattern": "./**.scss",
             "group": "sibling",
