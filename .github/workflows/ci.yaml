@@ -6,11 +6,10 @@ on:
 
 jobs:
   test:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: ["18.17"]
+        node-version: ["18.18"]
 
     steps:
       - uses: actions/checkout@v3
