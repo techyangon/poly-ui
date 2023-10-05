@@ -1,7 +1,14 @@
-import Typography from "@mui/material/Typography";
+import {
+  Experimental_CssVarsProvider as CssVarProvider,
+  StyledEngineProvider,
+} from "@mui/material/styles";
 
 const App = () => {
-  return <Typography>Poly</Typography>;
+  return (
+    <StyledEngineProvider injectFirst={true}>
+      <CssVarProvider></CssVarProvider>
+    </StyledEngineProvider>
+  );
 };
 
 export default App;
