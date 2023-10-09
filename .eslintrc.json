@@ -24,6 +24,12 @@
   "plugins": ["import", "react", "@tanstack/query", "@typescript-eslint"],
   "ignorePatterns": ["vite.config.ts"],
   "rules": {
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      "checksVoidReturn": {
+        "attributes": false
+      }
+    ],
     "@typescript-eslint/no-var-requires": "error",
     "import/no-cycle": "error",
     "import/no-unresolved": "error",
