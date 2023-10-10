@@ -1,8 +1,10 @@
+.husky
 .github
 build
 coverage
 dist
 node_modules
-index.html
-.eslintrc.json
+
 README.md
+index.html
+package.json
