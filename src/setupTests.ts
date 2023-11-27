@@ -5,12 +5,15 @@ import { afterAll, afterEach, beforeAll, vi } from "vitest";
 
 import { server } from "./mocks/server";
 
+import { queryClient } from "test-utils";
+
 global.fetch = fetch;
 
 beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
 
 afterEach(() => {
   server.resetHandlers();
+  queryClient.clear();
   cleanup();
 });
 
