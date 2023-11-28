@@ -10,9 +10,9 @@ import {
 
 interface AuthContext {
   accessToken: string;
-  email: string;
   setAccessToken: Dispatch<SetStateAction<string>>;
-  setEmail: Dispatch<SetStateAction<string>>;
+  setUsername: Dispatch<SetStateAction<string>>;
+  username: string;
 }
 
 interface AuthProviderProps {
@@ -21,19 +21,19 @@ interface AuthProviderProps {
 
 const defValues: AuthContext = {
   accessToken: "",
-  email: "",
   setAccessToken: () => undefined,
-  setEmail: () => undefined,
+  setUsername: () => undefined,
+  username: "",
 };
 
 const AuthContext = createContext<AuthContext>(defValues);
 
 function AuthProvider({ children }: AuthProviderProps) {
-  const [email, setEmail] = useState("");
   const [accessToken, setAccessToken] = useState("");
+  const [username, setUsername] = useState("");
   const values = useMemo(
-    () => ({ accessToken, email, setAccessToken, setEmail }),
-    [accessToken, email]
+    () => ({ accessToken, setAccessToken, setUsername, username }),
+    [accessToken, username]
   );
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;

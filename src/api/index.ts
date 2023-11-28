@@ -2,6 +2,7 @@ import { API_URL } from "../config";
 
 interface LoginResponse {
   access_token: string;
+  name: string;
   token_type: string;
   expires_in: number;
 }

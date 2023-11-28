@@ -1,4 +1,5 @@
 import { SubmitHandler, useForm } from "react-hook-form";
+import { Navigate } from "react-router-dom";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -12,6 +13,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 
 import { postLoginData } from "../../api";
 import { AUTH_CHECK } from "../../config";
+import { useAuth } from "../../contexts/AuthContext";
 import Input from "../common/Input";
 
 import styles from "./login.module.scss";
@@ -40,11 +42,22 @@ function Login() {
     },
     resolver: zodResolver(loginRules),
   });
+
+  const { accessToken, setAccessToken, setUsername } = useAuth();
+
   const login = useMutation({
     mutationFn: postLoginData,
     onError: (error) =>
       setError("root.serverError", { type: "401", message: error.message }),
+    onSuccess: (data) => {
+      setAccessToken(data.access_token);
+      setUsername(data.name);
+    },
   });
+
+  if (accessToken) {
+    return <Navigate to="/dashboard" replace={true} />;
+  }
 
   const onSubmit: SubmitHandler<LoginInput> = (data) => {
     clearErrors();

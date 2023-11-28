@@ -3,9 +3,9 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
 function Root() {
-  const authContext = useAuth();
+  const { accessToken } = useAuth();
 
-  if (authContext.email && authContext.accessToken) {
+  if (accessToken) {
     return <Navigate to="/dashboard" replace={true} />;
   } else {
     return <Navigate to="/login" replace={true} />;
