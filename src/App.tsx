@@ -7,6 +7,7 @@ import {
   StyledEngineProvider,
 } from "@mui/material/styles";
 
+import Dashboard from "./components/Dashboard/Dashboard";
 import Login from "./components/Login/Login";
 import Root from "./components/Root/Root";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
   },
   {
     path: "/login",
