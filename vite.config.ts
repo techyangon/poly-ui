@@ -13,7 +13,6 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: [
-      { find: "@", replacement: resolve(__dirname, "src") },
       {
         find: "test-utils",
         replacement: resolve(__dirname, "utils/test-utils"),

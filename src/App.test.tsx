@@ -1,11 +1,13 @@
-import '@testing-library/jest-dom/vitest';
-import { render, screen } from "test-utils";
+import "@testing-library/jest-dom/vitest";
 
 import App from "./App";
 
+import { render, screen } from "test-utils";
+
 describe("App", () => {
-  it("shows Poly nam", () => {
+  it("shows login form when unauthenticated", async () => {
     render(<App />);
-    expect(screen.getByText("Poly")).toBeInTheDocument();
+    await screen.findByLabelText("email");
+    await screen.findByLabelText("password");
   });
 });
