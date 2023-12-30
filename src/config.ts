@@ -4,16 +4,17 @@ const API_URL = import.meta.env.VITE_API_URL
 
 const AUTH_CHECK = {
   EMAIL: {
-    EMPTY: "Email cannot be empty",
-    INVALID: "Invalid email",
+    EMPTY: "Email cannot be empty.",
+    INVALID: "Invalid email.",
   },
   PASSWORD: {
-    LENGTH: "Password must be at least 8 characters",
+    LENGTH: "Password must be at least 8 characters.",
   },
 };
 
 const AUTH_RESPONSE = {
-  ERROR: "Incorrect email or password",
+  ERROR: "Incorrect email or password.",
+  SERVER: "Server unavailable.",
 };
 
 export { API_URL, AUTH_CHECK, AUTH_RESPONSE };

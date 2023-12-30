@@ -47,7 +47,7 @@ describe("Login form", () => {
     await screen.findByText(AUTH_CHECK.PASSWORD.LENGTH);
   });
 
-  it("shows error when password is shorter than specified", async () => {
+  it("shows error when username or password is incorrect", async () => {
     server.use(...errorHandlers);
 
     render(<Login />);

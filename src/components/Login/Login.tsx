@@ -24,7 +24,11 @@ export interface LoginInput {
 }
 
 const loginRules = z.object({
-  email: z.string().trim().min(1, { message: AUTH_CHECK.EMAIL.EMPTY }).email(),
+  email: z
+    .string()
+    .trim()
+    .min(1, { message: AUTH_CHECK.EMAIL.EMPTY })
+    .email({ message: AUTH_CHECK.EMAIL.INVALID }),
   password: z.string().min(8, { message: AUTH_CHECK.PASSWORD.LENGTH }),
 });
 
