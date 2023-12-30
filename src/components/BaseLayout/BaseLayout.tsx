@@ -62,7 +62,12 @@ function BaseLayout({ children }: BaseLayoutProps) {
               Poly
             </Typography>
             <div>
-              <IconButton color="inherit" onClick={handleMenuOpen} size="large">
+              <IconButton
+                aria-label="profile"
+                color="inherit"
+                onClick={handleMenuOpen}
+                size="large"
+              >
                 <AccountCircle />
               </IconButton>
               <Menu

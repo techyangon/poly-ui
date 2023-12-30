@@ -3,6 +3,8 @@ import React, { ReactElement } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RenderOptions, render } from "@testing-library/react";
 
+import { AuthContext } from "../src/contexts/AuthContext";
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -13,7 +15,16 @@ const queryClient = new QueryClient({
 
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <AuthContext.Provider
+      value={{
+        accessToken: "eyABC.DEF.GHI",
+        setAccessToken: () => undefined,
+        setUsername: () => undefined,
+        username: "user",
+      }}
+    >
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    </AuthContext.Provider>
   );
 };
 
