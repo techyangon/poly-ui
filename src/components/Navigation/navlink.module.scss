@@ -1,0 +1,11 @@
+.list-item {
+  display: block;
+  & :global .MuiButtonBase-root {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.item-button :global .MuiListItemIcon-root {
+  justify-content: center;
+}
