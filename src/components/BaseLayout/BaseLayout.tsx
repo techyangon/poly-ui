@@ -19,7 +19,7 @@ import Typography from "@mui/material/Typography";
 
 import Logo from "../../../poly-white.svg";
 import { useAuth } from "../../contexts/AuthContext";
-import Navigation from "../Navigation/Navigation";
+import Navigation, { DrawerHeader } from "../Navigation/Navigation";
 
 import styles from "./baselayout.module.scss";
 
@@ -107,7 +107,10 @@ function BaseLayout({ children }: BaseLayoutProps) {
         </Container>
       </Appbar>
       <Navigation />
-      <Box component="main">{children}</Box>
+      <Box className={styles.content} component="main">
+        <DrawerHeader />
+        {children}
+      </Box>
     </Box>
   );
 }

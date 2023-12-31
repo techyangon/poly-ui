@@ -10,7 +10,7 @@ import NavLink from "./NavLink";
 
 import styles from "./navigation.module.scss";
 
-const DrawerHeader = styled("div")(({ theme }) => ({
+export const DrawerHeader = styled("div")(({ theme }) => ({
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));

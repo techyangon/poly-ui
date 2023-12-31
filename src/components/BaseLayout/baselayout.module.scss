@@ -21,3 +21,11 @@
 .main-container {
   max-width: 0px;
 }
+
+.content {
+  height: 100vh;
+  flex-grow: 1;
+  padding-left: 16px;
+  padding-right: 16px;
+  overflow: auto;
+}
