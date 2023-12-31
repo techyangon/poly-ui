@@ -1,7 +1,7 @@
 import { MouseEvent, ReactNode, useState } from "react";
 import { Navigate } from "react-router-dom";
 
-import AccountCircle from "@mui/icons-material/AccountCircle";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import Appbar from "@mui/material/AppBar";
@@ -19,6 +19,7 @@ import Typography from "@mui/material/Typography";
 
 import Logo from "../../../poly-white.svg";
 import { useAuth } from "../../contexts/AuthContext";
+import Navigation from "../Navigation/Navigation";
 
 import styles from "./baselayout.module.scss";
 
@@ -68,7 +69,7 @@ function BaseLayout({ children }: BaseLayoutProps) {
                 onClick={handleMenuOpen}
                 size="large"
               >
-                <AccountCircle />
+                <AccountCircleOutlinedIcon />
               </IconButton>
               <Menu
                 anchorEl={anchorEl}
@@ -105,6 +106,7 @@ function BaseLayout({ children }: BaseLayoutProps) {
           </Toolbar>
         </Container>
       </Appbar>
+      <Navigation />
       <Box component="main">{children}</Box>
     </Box>
   );
