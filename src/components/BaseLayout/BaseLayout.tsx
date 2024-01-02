@@ -18,6 +18,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 
 import Logo from "../../../poly-white.svg";
+import { getAccessToken } from "../../api";
 import { useAuth } from "../../contexts/AuthContext";
 import Navigation, { DrawerHeader } from "../Navigation/Navigation";
 
@@ -29,10 +30,19 @@ interface BaseLayoutProps {
 
 function BaseLayout({ children }: BaseLayoutProps) {
   const { accessToken, setAccessToken, setUsername, username } = useAuth();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   if (!accessToken) {
-    return <Navigate to="/login" replace={true} />;
+    getAccessToken(username)
+      .then((response) => setAccessToken(response.access_token))
+      /* eslint-disable @typescript-eslint/no-unused-vars*/
+      .catch((error) => {
+        return <Navigate to="/login" replace={true} />;
+      });
+
+    if (!username) {
+      return <Navigate to="/login" replace={true} />;
+    }
   }
 
   const handleMenuOpen = (event: MouseEvent<HTMLElement>) => {
