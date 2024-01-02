@@ -36,7 +36,7 @@ function BaseLayout({ children }: BaseLayoutProps) {
     getAccessToken(username)
       .then((response) => setAccessToken(response.access_token))
       /* eslint-disable @typescript-eslint/no-unused-vars*/
-      .catch((error) => {
+      .catch((_) => {
         return <Navigate to="/login" replace={true} />;
       });
 
