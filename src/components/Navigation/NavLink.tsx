@@ -18,7 +18,7 @@ interface NavLinkProps {
   to: string;
 }
 
-const Link = forwardRef<HTMLAnchorElement, RouterLinkProps>(
+export const Link = forwardRef<HTMLAnchorElement, RouterLinkProps>(
   function Link(itemProps, ref) {
     return <RouterLink ref={ref} {...itemProps} role={undefined} />;
   }
