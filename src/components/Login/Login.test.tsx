@@ -1,4 +1,4 @@
-import { RouterProvider, createMemoryRouter } from "react-router-dom";
+import { Outlet, RouterProvider, createMemoryRouter } from "react-router-dom";
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import "@testing-library/jest-dom/vitest";
@@ -92,8 +92,18 @@ describe("Login form", () => {
         element: <Login />,
       },
       {
-        path: "/dashboard",
-        element: <div>Dashboard</div>,
+        path: "/home",
+        element: (
+          <div>
+            <Outlet />
+          </div>
+        ),
+        children: [
+          {
+            path: "profile",
+            element: <div>Profile</div>,
+          },
+        ],
       },
     ];
     const router = createMemoryRouter(routes, { initialEntries: ["/login"] });
@@ -115,6 +125,6 @@ describe("Login form", () => {
     await user.type(password, "password");
     await user.click(loginBtn);
 
-    await screen.findByText("Dashboard");
+    await screen.findByText("Profile");
   });
 });

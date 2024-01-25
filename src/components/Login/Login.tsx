@@ -60,7 +60,7 @@ function Login() {
   });
 
   if (accessToken) {
-    return <Navigate to="/dashboard" replace={true} />;
+    return <Navigate to="/home/profile" replace={true} />;
   }
 
   const onSubmit: SubmitHandler<LoginInput> = (data) => {

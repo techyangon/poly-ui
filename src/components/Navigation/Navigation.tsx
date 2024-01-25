@@ -25,9 +25,9 @@ function Navigation() {
       <List>
         <NavLink
           icon={<DashboardOutlinedIcon fontSize="large" />}
-          selected={location.pathname.split("/")[1] === "dashboard"}
+          selected={location.pathname.split("/")[2] === "dashboard"}
           title="dashboard"
-          to="/dashboard"
+          to="dashboard"
         />
       </List>
     </Drawer>
