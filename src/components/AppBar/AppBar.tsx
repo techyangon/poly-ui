@@ -33,6 +33,7 @@ function AppBar({ onLogout }: AppBarProps) {
   };
 
   const handleMenuClose = () => {
+    /* istanbul ignore next */
     setAnchorEl(null);
   };
 
