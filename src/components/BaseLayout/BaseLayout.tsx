@@ -11,12 +11,13 @@ import Navigation, { DrawerHeader } from "../Navigation/Navigation";
 import styles from "./baselayout.module.scss";
 
 function BaseLayout() {
-  const { accessToken, setAccessToken, setUsername, username } = useAuth();
+  const { accessToken, setAccessToken, setPermissions, setUsername, username } =
+    useAuth();
 
   if (!accessToken) {
     getAccessToken(username)
       .then((response) => setAccessToken(response.access_token))
-      /* eslint-disable @typescript-eslint/no-unused-vars*/
+      /* eslint-disable @typescript-eslint/no-unused-vars */
       .catch((_) => {
         return <Navigate to="/login" replace={true} />;
       });
@@ -28,6 +29,7 @@ function BaseLayout() {
 
   const handleLogout = () => {
     setAccessToken("");
+    setPermissions({});
     setUsername("");
   };
 

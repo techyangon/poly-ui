@@ -18,6 +18,8 @@ import Input from "../common/Input";
 
 import styles from "./login.module.scss";
 
+import type { Actions, Resources } from "../../types";
+
 export interface LoginInput {
   email: string;
   password: string;
@@ -47,7 +49,8 @@ function Login() {
     resolver: zodResolver(loginRules),
   });
 
-  const { accessToken, setAccessToken, setUsername } = useAuth();
+  const { accessToken, setAccessToken, setPermissions, setUsername } =
+    useAuth();
 
   const login = useMutation({
     mutationFn: postLoginData,
@@ -55,6 +58,15 @@ function Login() {
       setError("root.serverError", { type: "401", message: error.message }),
     onSuccess: (data) => {
       setAccessToken(data.access_token);
+      setPermissions(
+        data.permissions.reduce(
+          (permissions, current) => {
+            permissions[current.resource] = current.actions;
+            return permissions;
+          },
+          {} as Record<Resources, Actions[]>
+        )
+      );
       setUsername(data.name);
     },
   });
