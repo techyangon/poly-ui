@@ -1,14 +1,15 @@
-import { RouterProvider, createMemoryRouter } from "react-router-dom";
+import { Outlet, RouterProvider, createMemoryRouter } from "react-router-dom";
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import "@testing-library/jest-dom/vitest";
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { AUTH_CHECK, AUTH_RESPONSE } from "../../config";
 import { AuthProvider } from "../../contexts/AuthContext";
 import { errorHandlers } from "../../mocks/handlers";
 import { server } from "../../mocks/server";
+import BaseLayout from "../BaseLayout/BaseLayout";
 
 import Login from "./Login";
 
@@ -92,8 +93,18 @@ describe("Login form", () => {
         element: <Login />,
       },
       {
-        path: "/dashboard",
-        element: <div>Dashboard</div>,
+        path: "/home",
+        element: (
+          <div>
+            <Outlet />
+          </div>
+        ),
+        children: [
+          {
+            path: "profile",
+            element: <div>Profile</div>,
+          },
+        ],
       },
     ];
     const router = createMemoryRouter(routes, { initialEntries: ["/login"] });
@@ -115,6 +126,44 @@ describe("Login form", () => {
     await user.type(password, "password");
     await user.click(loginBtn);
 
-    await screen.findByText("Dashboard");
+    await screen.findByText("Profile");
+  });
+
+  it("displays navigation links per user permissions", async () => {
+    const routes = [
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/home",
+        element: <BaseLayout />,
+        children: [
+          {
+            path: "profile",
+            element: <div>Profile</div>,
+          },
+        ],
+      },
+    ];
+    const router = createMemoryRouter(routes, { initialEntries: ["/login"] });
+    render(
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </AuthProvider>
+    );
+
+    const user = userEvent.setup();
+
+    await user.type(screen.getByLabelText("Email"), "user@mail.com");
+    await user.type(screen.getByLabelText("Password"), "password");
+    await user.click(screen.getByRole("button", { name: "Login" }));
+
+    await screen.findByLabelText("Dashboard");
+    await waitFor(() =>
+      expect(screen.queryByLabelText("Branches")).not.toBeInTheDocument()
+    );
   });
 });

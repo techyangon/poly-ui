@@ -34,9 +34,9 @@ const getAccessToken = async (username: string): Promise<LoginResponse> => {
 
 const getAllData = async <T>(
   accessToken: string,
-  limit: number,
   resource: string,
   skip: number,
+  limit: number,
   username: string
 ): Promise<T> => {
   const response = await fetch(

@@ -21,7 +21,13 @@ export default defineConfig({
   },
   test: {
     coverage: {
-      exclude: ["src/config/*.ts", "src/mocks/*.ts"],
+      exclude: [
+        "src/api/*.ts",
+        "src/config/*.ts",
+        "src/contexts/*.tsx",
+        "src/mocks/*.ts",
+        "utils",
+      ],
       reporter: ["cobertura", "text"],
       provider: "istanbul",
     },

@@ -1,7 +1,5 @@
-import BaseLayout from "../BaseLayout/BaseLayout";
-
 function Dashboard() {
-  return <BaseLayout>This is dashboard</BaseLayout>;
+  return <div>This is dashboard</div>;
 }
 
 export default Dashboard;

@@ -5,6 +5,8 @@ import { RenderOptions, render } from "@testing-library/react";
 
 import { AuthContext } from "../src/contexts/AuthContext";
 
+import type { Permission } from "../src/contexts/AuthContext";
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -13,12 +15,26 @@ const queryClient = new QueryClient({
   },
 });
 
+const permissions = {
+  audit: [],
+  branches: [],
+  dashboard: ["GET"],
+  locations: [],
+  roles: [],
+  resources: [],
+  schedules: [],
+  staff: [],
+  students: [],
+} as Permission;
+
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   return (
     <AuthContext.Provider
       value={{
         accessToken: "eyABC.DEF.GHI",
+        permissions: permissions,
         setAccessToken: () => undefined,
+        setPermissions: () => undefined,
         setUsername: () => undefined,
         username: "user",
       }}

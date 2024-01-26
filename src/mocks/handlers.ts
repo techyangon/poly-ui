@@ -5,7 +5,20 @@ import { AUTH_RESPONSE } from "../config";
 export const handlers = [
   http.post(/login/, () => {
     return HttpResponse.json(
-      { access_token: "eyABC.DEF.GHI", name: "user" },
+      {
+        access_token: "eyABC.DEF.GHI",
+        name: "user",
+        permissions: [
+          {
+            resource: "dashboard",
+            actions: ["GET"],
+          },
+          {
+            resource: "branches",
+            actions: [],
+          },
+        ],
+      },
       { status: 200 }
     );
   }),

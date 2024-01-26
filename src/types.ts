@@ -1,12 +1,29 @@
-interface Base {
-  created_at: string;
-  created_by: string;
-  updated_at: string;
-  updated_by: string;
-}
-
 export interface ErrorResponse {
   detail: string;
+}
+
+export enum Actions {
+  DELETE = "DELETE",
+  GET = "GET",
+  POST = "POST",
+  PUT = "PUT",
+}
+
+export enum Resources {
+  AUDIT = "audit",
+  BRANCHES = "branches",
+  DASHBOARD = "dashboard",
+  LOCATIONS = "locations",
+  RESOURCES = "resources",
+  ROLES = "roles",
+  SCHEDULES = "schedules",
+  STAFF = "staff",
+  STUDENTS = "students",
+}
+
+export interface Permission {
+  resource: Resources;
+  actions: Actions[];
 }
 
 export interface LoginResponse {
@@ -14,13 +31,6 @@ export interface LoginResponse {
   name: string;
   token_type: string;
   expires_in: number;
-}
-
-interface Resource extends Base {
-  name: string;
-}
-
-export interface ResourceResponse {
-  resources: Resource[];
-  total: number;
+  permissions: Permission[];
+  role: string;
 }
