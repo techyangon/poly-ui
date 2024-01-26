@@ -10,6 +10,8 @@ import Navigation, { DrawerHeader } from "../Navigation/Navigation";
 
 import styles from "./baselayout.module.scss";
 
+import type { Permission } from "../../contexts/AuthContext";
+
 function BaseLayout() {
   const { accessToken, setAccessToken, setPermissions, setUsername, username } =
     useAuth();
@@ -29,7 +31,7 @@ function BaseLayout() {
 
   const handleLogout = () => {
     setAccessToken("");
-    setPermissions({});
+    setPermissions({} as Permission);
     setUsername("");
   };
 
