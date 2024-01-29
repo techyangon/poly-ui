@@ -11,35 +11,37 @@ import styles from "./input.module.scss";
 
 interface InputProps<T extends FieldValues> extends UseControllerProps<T> {
   control: Control<T>;
-  label: string;
+  readonly?: boolean;
   type: string;
 }
 
 function Input<T extends FieldValues>({
   control,
-  label,
   name,
+  readonly,
   type,
 }: InputProps<T>) {
-  const {
-    field: { onChange },
-    fieldState: { error, invalid },
-  } = useController({
+  const { field, fieldState } = useController({
     control: control,
     name: name,
   });
 
   return (
     <TextField
-      aria-label={name}
+      InputProps={{
+        readOnly: readonly ? readonly : false,
+      }}
+      aria-label={field.name}
       className={styles.inputField}
-      error={invalid}
-      helperText={error ? error.message : " "}
-      id={name}
-      label={label}
-      name={name}
-      onChange={onChange}
+      error={fieldState.invalid}
+      helperText={fieldState.error ? fieldState.error.message : " "}
+      id={field.name}
+      hiddenLabel={true}
+      name={field.name}
+      onChange={field.onChange}
+      size="small"
       type={type}
+      value={field.value}
       variant="filled"
     />
   );

@@ -93,13 +93,10 @@ function Login() {
           className={styles.formContainer}
           onSubmit={handleSubmit(onSubmit)}
         >
-          <Input control={control} label="Email" name="email" type="text" />
-          <Input
-            control={control}
-            label="Password"
-            name="password"
-            type="password"
-          />
+          <label htmlFor="email">Email</label>
+          <Input control={control} name="email" type="text" />
+          <label htmlFor="password">Password</label>
+          <Input control={control} name="password" type="password" />
           <Button
             className={styles.formField}
             type="submit"
