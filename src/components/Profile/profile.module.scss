@@ -1,0 +1,20 @@
+.container {
+  & :global .MuiPaper-root {
+    margin-bottom: 1em;
+  }
+}
+
+.user-info {
+  margin: 0;
+}
+
+.input-grid {
+  & :global .MuiFormControl-root {
+    width: 50%;
+  }
+}
+
+.label {
+  color: var(--mui-palette-grey-700);
+  line-height: 2.5;
+}
