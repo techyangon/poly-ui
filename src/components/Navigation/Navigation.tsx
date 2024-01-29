@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 
+import BusinessOutlinedIcon from "@mui/icons-material/BusinessOutlined";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
-import LocationCityOutlinedIcon from "@mui/icons-material/LocationCityOutlined";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -27,7 +27,7 @@ function Navigation() {
       <DrawerHeader />
       <Divider />
       <List>
-        {permissions.dashboard.length && (
+        {permissions.dashboard?.length && (
           <NavLink
             icon={<DashboardOutlinedIcon fontSize="medium" />}
             selected={location.pathname.split("/")[2] === "dashboard"}
@@ -35,9 +35,9 @@ function Navigation() {
             to="dashboard"
           />
         )}
-        {permissions.branches.length && (
+        {permissions.branches?.length && (
           <NavLink
-            icon={<LocationCityOutlinedIcon fontSize="medium" />}
+            icon={<BusinessOutlinedIcon fontSize="medium" />}
             selected={location.pathname.split("/")[2] === "branches"}
             title="Branches"
             to="branches"
