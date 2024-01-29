@@ -34,3 +34,11 @@ export interface LoginResponse {
   permissions: Permission[];
   role: string;
 }
+
+export interface ProfileResponse {
+  created_at: string;
+  email: string;
+  id: number;
+  name: string;
+  role: string;
+}

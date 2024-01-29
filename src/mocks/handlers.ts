@@ -22,6 +22,18 @@ export const handlers = [
       { status: 200 }
     );
   }),
+  http.get(/profile/, () => {
+    return HttpResponse.json(
+      {
+        created_at: "2024-01-01T00:00:00.000000Z",
+        email: "user@mail.com",
+        id: 1,
+        name: "user",
+        role: "admin",
+      },
+      { status: 200 }
+    );
+  }),
 ];
 
 export const errorHandlers = [
