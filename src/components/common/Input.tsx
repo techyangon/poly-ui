@@ -5,6 +5,10 @@ import {
   useController,
 } from "react-hook-form";
 
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { FilledInputProps } from "@mui/material/FilledInput";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 
 import styles from "./input.module.scss";
@@ -26,15 +30,32 @@ function Input<T extends FieldValues>({
     name: name,
   });
 
+  const generateInputProps = (): Partial<FilledInputProps> => {
+    if (readonly) {
+      return {
+        endAdornment: (
+          <InputAdornment position="end">
+            <IconButton edge="end">
+              <LockOutlinedIcon />
+            </IconButton>
+          </InputAdornment>
+        ),
+        readOnly: readonly,
+      };
+    }
+    return {};
+  };
+
   return (
     <TextField
-      InputProps={{
-        readOnly: readonly ? readonly : false,
-      }}
+      InputProps={generateInputProps()}
       aria-label={field.name}
-      className={styles.inputField}
+      className={readonly ? styles.readonlyField : styles.inputField}
       error={fieldState.invalid}
-      helperText={fieldState.error ? fieldState.error.message : " "}
+      fullWidth={true}
+      helperText={
+        readonly ? "" : fieldState.error ? fieldState.error.message : " "
+      }
       id={field.name}
       hiddenLabel={true}
       name={field.name}
