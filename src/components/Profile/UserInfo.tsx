@@ -5,6 +5,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 
 import { getAllData } from "../../api";
 import { useAuth } from "../../contexts/AuthContext";
+import { useProfileStore } from "../../store";
 import ReadonlyInput from "../common/ReadonlyInput";
 
 import styles from "./profile.module.scss";
@@ -13,6 +14,10 @@ import type { ProfileResponse } from "../../types";
 
 function UserInfo() {
   const { accessToken, setAccessToken, username } = useAuth();
+
+  const userInfo = useProfileStore((state) => state.userInfo);
+  const updateUserInfo = useProfileStore((state) => state.updateUserInfo);
+
   const { control, reset } = useForm({
     defaultValues: {
       created_at: "",
@@ -32,17 +37,27 @@ function UserInfo() {
           10,
           username
         );
-        reset({
+        updateUserInfo({
           created_at: new Date(data.created_at).toLocaleDateString("sv-SE"),
           email: data.email,
+          id: data.id,
+          name: data.name,
           role: data.role,
-          username: data.name,
         });
       } catch (error) {
         if ((error as Error).message === "Expired token") setAccessToken("");
       }
     })();
   }, []);
+
+  useEffect(() => {
+    reset({
+      created_at: userInfo.created_at,
+      email: userInfo.email,
+      role: userInfo.role,
+      username: userInfo.name,
+    });
+  }, [userInfo]);
 
   return (
     <Grid className={styles.userInfo} container spacing={2}>
