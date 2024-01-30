@@ -93,6 +93,7 @@
       "@typescript-eslint"
     ],
     "ignorePatterns": [
+      "__mocks__/*.ts",
       "vite.config.ts"
     ],
     "rules": {

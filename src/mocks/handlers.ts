@@ -1,6 +1,6 @@
 import { HttpResponse, http } from "msw";
 
-import { AUTH_RESPONSE } from "../config";
+import { AUTH_RESPONSE, PROFILE_RESPONSE } from "../config";
 
 export const handlers = [
   http.post(/login/, () => {
@@ -34,10 +34,22 @@ export const handlers = [
       { status: 200 }
     );
   }),
+  http.put(/profile/, () => {
+    return HttpResponse.json(
+      { message: "User password is updated." },
+      { status: 200 }
+    );
+  }),
 ];
 
 export const errorHandlers = [
   http.post(/login/, () => {
     return HttpResponse.json({ detail: AUTH_RESPONSE.ERROR }, { status: 401 });
+  }),
+  http.put(/profile/, () => {
+    return HttpResponse.json(
+      { detail: PROFILE_RESPONSE.ERROR },
+      { status: 400 }
+    );
   }),
 ];
