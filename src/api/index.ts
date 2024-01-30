@@ -1,6 +1,15 @@
 import { API_URL } from "../config";
 
-import type { ErrorResponse, LoginResponse } from "../types";
+import type { ErrorResponse, LoginResponse, SuccessResponse } from "../types";
+
+type UpdateResponse = SuccessResponse | ErrorResponse;
+
+export interface UpdateDataProps<T> {
+  accessToken: string;
+  resource: string;
+  payload: T;
+  username: string;
+}
 
 const handleResponse = async <T>(response: Response): Promise<T> => {
   if (response.ok) {
@@ -53,4 +62,23 @@ const getAllData = async <T>(
   return await handleResponse<T>(response);
 };
 
-export { getAccessToken, getAllData, postLoginData };
+const updateData = async <T>({
+  accessToken,
+  resource,
+  payload,
+  username,
+}: UpdateDataProps<T>): Promise<UpdateResponse> => {
+  const response = await fetch(`${API_URL}/${resource}/`, {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+      "X-Username": username,
+    },
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
+  return await handleResponse<UpdateResponse>(response);
+};
+
+export { getAccessToken, getAllData, postLoginData, updateData };

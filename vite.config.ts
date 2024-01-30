@@ -26,6 +26,7 @@ export default defineConfig({
         "src/config/*.ts",
         "src/contexts/*.tsx",
         "src/mocks/*.ts",
+        "src/types.ts",
         "utils",
       ],
       reporter: ["cobertura", "text"],
