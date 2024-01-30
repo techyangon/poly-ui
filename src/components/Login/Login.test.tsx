@@ -24,8 +24,7 @@ describe("Login form", () => {
     );
     const user = userEvent.setup();
 
-    const loginBtn = screen.getByRole("button", { name: "Login" });
-    await user.click(loginBtn);
+    await user.click(screen.getByRole("button", { name: "Login" }));
 
     await screen.findByText(AUTH_CHECK.EMAIL.EMPTY);
     await screen.findByText(AUTH_CHECK.PASSWORD.LENGTH);
@@ -39,11 +38,8 @@ describe("Login form", () => {
     );
     const user = userEvent.setup();
 
-    const email = screen.getByLabelText("Email");
-    const loginBtn = screen.getByRole("button", { name: "Login" });
-
-    await user.type(email, "test");
-    await user.click(loginBtn);
+    await user.type(screen.getByLabelText("Email"), "test");
+    await user.click(screen.getByRole("button", { name: "Login" }));
 
     await screen.findByText(AUTH_CHECK.EMAIL.INVALID);
   });
@@ -56,11 +52,8 @@ describe("Login form", () => {
     );
     const user = userEvent.setup();
 
-    const password = screen.getByLabelText("Password");
-    const loginBtn = screen.getByRole("button", { name: "Login" });
-
-    await user.type(password, "pass");
-    await user.click(loginBtn);
+    await user.type(screen.getByLabelText("Password"), "pass");
+    await user.click(screen.getByRole("button", { name: "Login" }));
 
     await screen.findByText(AUTH_CHECK.PASSWORD.LENGTH);
   });
@@ -75,13 +68,9 @@ describe("Login form", () => {
     );
     const user = userEvent.setup();
 
-    const email = screen.getByLabelText("Email");
-    const password = screen.getByLabelText("Password");
-    const loginBtn = screen.getByRole("button", { name: "Login" });
-
-    await user.type(email, "test@mail.com");
-    await user.type(password, "password");
-    await user.click(loginBtn);
+    await user.type(screen.getByLabelText("Email"), "test@mail.com");
+    await user.type(screen.getByLabelText("Password"), "password");
+    await user.click(screen.getByRole("button", { name: "Login" }));
 
     await screen.findByText(AUTH_RESPONSE.ERROR);
   });
@@ -118,13 +107,9 @@ describe("Login form", () => {
 
     const user = userEvent.setup();
 
-    const email = screen.getByLabelText("Email");
-    const password = screen.getByLabelText("Password");
-    const loginBtn = screen.getByRole("button", { name: "Login" });
-
-    await user.type(email, "user@mail.com");
-    await user.type(password, "password");
-    await user.click(loginBtn);
+    await user.type(screen.getByLabelText("Email"), "user@mail.com");
+    await user.type(screen.getByLabelText("Password"), "password");
+    await user.click(screen.getByRole("button", { name: "Login" }));
 
     await screen.findByText("Profile");
   });

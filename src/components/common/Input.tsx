@@ -9,37 +9,31 @@ import TextField from "@mui/material/TextField";
 
 import styles from "./input.module.scss";
 
-interface InputProps<T extends FieldValues> extends UseControllerProps<T> {
+export interface InputProps<T extends FieldValues>
+  extends UseControllerProps<T> {
   control: Control<T>;
-  label: string;
-  type: string;
 }
 
-function Input<T extends FieldValues>({
-  control,
-  label,
-  name,
-  type,
-}: InputProps<T>) {
-  const {
-    field: { onChange },
-    fieldState: { error, invalid },
-  } = useController({
+function Input<T extends FieldValues>({ control, name }: InputProps<T>) {
+  const { field, fieldState } = useController({
     control: control,
     name: name,
   });
 
   return (
     <TextField
-      aria-label={name}
+      aria-label={field.name}
       className={styles.inputField}
-      error={invalid}
-      helperText={error ? error.message : " "}
-      id={name}
-      label={label}
-      name={name}
-      onChange={onChange}
-      type={type}
+      error={fieldState.invalid}
+      fullWidth={true}
+      helperText={fieldState.error ? fieldState.error.message : " "}
+      id={field.name}
+      hiddenLabel={true}
+      name={field.name}
+      onChange={field.onChange}
+      size="small"
+      type="text"
+      value={field.value}
       variant="filled"
     />
   );

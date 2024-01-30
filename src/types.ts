@@ -1,3 +1,7 @@
+export interface SuccessResponse {
+  message: string;
+}
+
 export interface ErrorResponse {
   detail: string;
 }
@@ -32,5 +36,13 @@ export interface LoginResponse {
   token_type: string;
   expires_in: number;
   permissions: Permission[];
+  role: string;
+}
+
+export interface ProfileResponse {
+  created_at: string;
+  email: string;
+  id: number;
+  name: string;
   role: string;
 }

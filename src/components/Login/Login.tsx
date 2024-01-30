@@ -15,6 +15,7 @@ import { postLoginData } from "../../api";
 import { AUTH_CHECK } from "../../config";
 import { useAuth } from "../../contexts/AuthContext";
 import Input from "../common/Input";
+import PasswordInput from "../common/PasswordInput";
 
 import styles from "./login.module.scss";
 
@@ -93,13 +94,10 @@ function Login() {
           className={styles.formContainer}
           onSubmit={handleSubmit(onSubmit)}
         >
-          <Input control={control} label="Email" name="email" type="text" />
-          <Input
-            control={control}
-            label="Password"
-            name="password"
-            type="password"
-          />
+          <label htmlFor="email">Email</label>
+          <Input control={control} name="email" />
+          <label htmlFor="password">Password</label>
+          <PasswordInput control={control} name="password" />
           <Button
             className={styles.formField}
             type="submit"
