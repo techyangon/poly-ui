@@ -5,7 +5,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 
 import { getAllData } from "../../api";
 import { useAuth } from "../../contexts/AuthContext";
-import Input from "../common/Input";
+import ReadonlyInput from "../common/ReadonlyInput";
 
 import styles from "./profile.module.scss";
 
@@ -52,7 +52,7 @@ function UserInfo() {
         </label>
       </Grid>
       <Grid xs={12} md={8}>
-        <Input control={control} name="username" readonly={true} type="text" />
+        <ReadonlyInput control={control} name="username" />
       </Grid>
       <Grid xs={12} md={4}>
         <label className={styles.label} htmlFor="email">
@@ -60,7 +60,7 @@ function UserInfo() {
         </label>
       </Grid>
       <Grid xs={12} md={8}>
-        <Input control={control} name="email" readonly={true} type="text" />
+        <ReadonlyInput control={control} name="email" />
       </Grid>
       <Grid xs={12} md={4}>
         <label className={styles.label} htmlFor="role">
@@ -68,7 +68,7 @@ function UserInfo() {
         </label>
       </Grid>
       <Grid xs={12} md={8}>
-        <Input control={control} name="role" readonly={true} type="text" />
+        <ReadonlyInput control={control} name="role" />
       </Grid>
       <Grid xs={12} md={4}>
         <label className={styles.label} htmlFor="created_at">
@@ -76,12 +76,7 @@ function UserInfo() {
         </label>
       </Grid>
       <Grid xs={12} md={8}>
-        <Input
-          control={control}
-          name="created_at"
-          readonly={true}
-          type="text"
-        />
+        <ReadonlyInput control={control} name="created_at" />
       </Grid>
     </Grid>
   );
