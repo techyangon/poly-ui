@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
-import { useQuery } from "@tanstack/react-query";
-
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Snackbar from "@mui/material/Snackbar";
 
-import { getAccessToken, getAllData } from "../../api";
 import { useAuth } from "../../contexts/AuthContext";
+import useGetAccessToken from "../../hooks/useGetAccessToken";
+import useGetLocations from "../../hooks/useGetLocations";
 import { useProfileStore } from "../../store";
 import AppBar from "../AppBar/AppBar";
 import Navigation, { DrawerHeader } from "../Navigation/Navigation";
@@ -17,67 +16,40 @@ import Navigation, { DrawerHeader } from "../Navigation/Navigation";
 import styles from "./baselayout.module.scss";
 
 import type { Permission } from "../../contexts/AuthContext";
-import type { Location, LocationResponse } from "../../types";
 
 function BaseLayout() {
-  const { accessToken, setAccessToken, setPermissions, setUsername, username } =
-    useAuth();
+  const { setAccessToken, setPermissions, setUsername, username } = useAuth();
+  const { data: accessTokenData, error: accessTokenError } =
+    useGetAccessToken();
+
   const [openLogoutAlert, setOpenLogoutAlert] = useState(false);
-
-  /* Zustand store */
-  const updateLocations = useProfileStore((state) => state.updateLocations);
-
-  /* Fetch location data */
-  const { data, error } = useQuery({
-    queryKey: ["locations", accessToken, username],
-    queryFn: async (): Promise<LocationResponse> =>
-      await getAllData(accessToken, "locations", 0, 10, username),
-    staleTime: Infinity,
-  });
   const navigate = useNavigate();
 
-  /* Update store */
-  useEffect(() => {
-    if (data) {
-      const states = {} as Location;
-      const cities = {} as Record<number, Location>;
-      const townships = {} as Record<number, Location>;
+  if (accessTokenData) {
+    setAccessToken(accessTokenData.access_token);
+    setUsername(accessTokenData.name);
+  }
+  if (accessTokenError && accessTokenError.message === "Expired token") {
+    setOpenLogoutAlert(true);
+    setTimeout(() => navigate("/login", { replace: true }), 3000);
+  }
+  if (!username) {
+    navigate("/login", { replace: true });
+  }
 
-      data.states.forEach((state) => {
-        states[state.id] = state.name;
-        cities[state.id] = {};
+  const { data: locationData, error: locationError } = useGetLocations();
+  const updateLocations = useProfileStore((state) => state.updateLocations);
 
-        state.cities.forEach((city) => {
-          cities[state.id][city.id] = city.name;
-          townships[city.id] = {};
-
-          city.townships.forEach((tsp) => {
-            townships[city.id][tsp.id] = tsp.name;
-          });
-        });
-      });
-
-      updateLocations({ states: states, cities: cities, townships: townships });
-    }
-  }, [data]);
-
-  if (error && error.message === "Expired token") {
+  if (locationError && locationError.message === "Expired token") {
     setAccessToken("");
   }
 
-  if (!accessToken) {
-    getAccessToken(username)
-      .then((response) => setAccessToken(response.access_token))
-      /* eslint-disable @typescript-eslint/no-unused-vars */
-      .catch((_) => {
-        setOpenLogoutAlert(true);
-        setTimeout(() => navigate("/login", { replace: true }), 3000);
-      });
-
-    if (!username) {
-      navigate("/login", { replace: true });
+  /* Update store */
+  useEffect(() => {
+    if (locationData) {
+      updateLocations(locationData);
     }
-  }
+  }, [locationData]);
 
   const handleLogout = () => {
     setAccessToken("");
