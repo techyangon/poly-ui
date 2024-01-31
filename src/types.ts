@@ -46,3 +46,28 @@ export interface ProfileResponse {
   name: string;
   role: string;
 }
+
+interface Township {
+  id: number;
+  name: string;
+}
+
+interface City extends Township {
+  townships: Township[];
+}
+
+interface State extends Township {
+  cities: City[];
+}
+
+export interface LocationResponse {
+  states: State[];
+}
+
+export type Location = Record<number, string>;
+
+export interface LocationData {
+  states: Location;
+  cities: Record<number, Location>;
+  townships: Record<number, Location>;
+}

@@ -1,13 +1,15 @@
 import { create } from "zustand";
 
-import type { ProfileResponse } from "./types";
+import type { LocationData, ProfileResponse } from "./types";
 
 interface State {
   userInfo: ProfileResponse;
+  locations: LocationData;
 }
 
 interface Action {
   updateUserInfo: (data: ProfileResponse) => void;
+  updateLocations: (data: LocationData) => void;
 }
 
 const useProfileStore = create<State & Action>((set) => ({
@@ -18,6 +20,11 @@ const useProfileStore = create<State & Action>((set) => ({
     name: "",
     role: "",
   },
+  locations: {
+    states: {},
+    cities: {},
+    townships: {},
+  },
   updateUserInfo: (data: ProfileResponse) =>
     set(() => ({
       userInfo: {
@@ -26,6 +33,14 @@ const useProfileStore = create<State & Action>((set) => ({
         id: data.id,
         name: data.name,
         role: data.role,
+      },
+    })),
+  updateLocations: (data: LocationData) =>
+    set(() => ({
+      locations: {
+        states: data.states,
+        cities: data.cities,
+        townships: data.townships,
       },
     })),
 }));
