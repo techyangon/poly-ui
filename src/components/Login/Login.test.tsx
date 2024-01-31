@@ -27,7 +27,7 @@ describe("Login form", () => {
     await user.click(screen.getByRole("button", { name: "Login" }));
 
     await screen.findByText(AUTH_CHECK.EMAIL.EMPTY);
-    await screen.findByText(AUTH_CHECK.PASSWORD.LENGTH);
+    await screen.findByText(AUTH_CHECK.PASSWORD.EMPTY);
   });
 
   it("shows error when email is invalid", async () => {
@@ -52,10 +52,10 @@ describe("Login form", () => {
     );
     const user = userEvent.setup();
 
-    await user.type(screen.getByLabelText("Password"), "pass");
+    await user.type(screen.getByLabelText("Password"), " ");
     await user.click(screen.getByRole("button", { name: "Login" }));
 
-    await screen.findByText(AUTH_CHECK.PASSWORD.LENGTH);
+    await screen.findByText(AUTH_CHECK.PASSWORD.EMPTY);
   });
 
   it("shows error when username or password is incorrect", async () => {
@@ -146,7 +146,7 @@ describe("Login form", () => {
     await user.type(screen.getByLabelText("Password"), "password");
     await user.click(screen.getByRole("button", { name: "Login" }));
 
-    await screen.findByLabelText("Dashboard");
+    await screen.findByText("Profile");
     await waitFor(() =>
       expect(screen.queryByLabelText("Branches")).not.toBeInTheDocument()
     );

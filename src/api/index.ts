@@ -1,6 +1,6 @@
 import { API_URL } from "../config";
 
-import type { ErrorResponse, LoginResponse, SuccessResponse } from "../types";
+import type { ErrorResponse, SuccessResponse } from "../types";
 
 type UpdateResponse = SuccessResponse | ErrorResponse;
 
@@ -20,16 +20,6 @@ export const handleResponse = async <T>(response: Response): Promise<T> => {
     const errorResponse = (await response.json()) as ErrorResponse;
     throw new Error(errorResponse.detail);
   }
-};
-
-const postLoginData = async (loginData: FormData): Promise<LoginResponse> => {
-  const response = await fetch(`${API_URL}/login`, {
-    body: loginData,
-    headers: { Accept: "application/json" },
-    method: "POST",
-  });
-
-  return await handleResponse<LoginResponse>(response);
 };
 
 const getAllData = async <T>(
@@ -72,4 +62,4 @@ const updateData = async <T>({
   return await handleResponse<UpdateResponse>(response);
 };
 
-export { getAllData, postLoginData, updateData };
+export { getAllData, updateData };

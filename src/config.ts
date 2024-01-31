@@ -8,7 +8,7 @@ const AUTH_CHECK = {
     INVALID: "Invalid email.",
   },
   PASSWORD: {
-    LENGTH: "Password must be at least 8 characters.",
+    EMPTY: "Password cannot be empty.",
   },
 };
 
