@@ -11,7 +11,7 @@ export interface UpdateDataProps<T> {
   username: string;
 }
 
-const handleResponse = async <T>(response: Response): Promise<T> => {
+export const handleResponse = async <T>(response: Response): Promise<T> => {
   if (response.ok) {
     return (await response.json()) as T;
   } else if (response.status === 502) {
@@ -27,15 +27,6 @@ const postLoginData = async (loginData: FormData): Promise<LoginResponse> => {
     body: loginData,
     headers: { Accept: "application/json" },
     method: "POST",
-  });
-
-  return await handleResponse<LoginResponse>(response);
-};
-
-const getAccessToken = async (username: string): Promise<LoginResponse> => {
-  const response = await fetch(`${API_URL}/token`, {
-    headers: { Accept: "application/json", "X-Username": username },
-    method: "GET",
   });
 
   return await handleResponse<LoginResponse>(response);
@@ -81,4 +72,4 @@ const updateData = async <T>({
   return await handleResponse<UpdateResponse>(response);
 };
 
-export { getAccessToken, getAllData, postLoginData, updateData };
+export { getAllData, postLoginData, updateData };
