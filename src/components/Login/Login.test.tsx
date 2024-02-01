@@ -17,11 +17,19 @@ import { queryClient, screen } from "test-utils";
 
 describe("Login form", () => {
   it("shows errors when values are empty", async () => {
+    const routes = [
+      {
+        path: "/login",
+        element: <Login />,
+      },
+    ];
+    const router = createMemoryRouter(routes, { initialEntries: ["/login"] });
     render(
       <QueryClientProvider client={queryClient}>
-        <Login />
+        <RouterProvider router={router} />
       </QueryClientProvider>
     );
+
     const user = userEvent.setup();
 
     await user.click(screen.getByRole("button", { name: "Login" }));
@@ -31,11 +39,19 @@ describe("Login form", () => {
   });
 
   it("shows error when email is invalid", async () => {
+    const routes = [
+      {
+        path: "/login",
+        element: <Login />,
+      },
+    ];
+    const router = createMemoryRouter(routes, { initialEntries: ["/login"] });
     render(
       <QueryClientProvider client={queryClient}>
-        <Login />
+        <RouterProvider router={router} />
       </QueryClientProvider>
     );
+
     const user = userEvent.setup();
 
     await user.type(screen.getByLabelText("Email"), "test");
@@ -45,11 +61,19 @@ describe("Login form", () => {
   });
 
   it("shows error when password is shorter than specified", async () => {
+    const routes = [
+      {
+        path: "/login",
+        element: <Login />,
+      },
+    ];
+    const router = createMemoryRouter(routes, { initialEntries: ["/login"] });
     render(
       <QueryClientProvider client={queryClient}>
-        <Login />
+        <RouterProvider router={router} />
       </QueryClientProvider>
     );
+
     const user = userEvent.setup();
 
     await user.type(screen.getByLabelText("Password"), " ");
@@ -61,11 +85,19 @@ describe("Login form", () => {
   it("shows error when username or password is incorrect", async () => {
     server.use(...errorHandlers);
 
+    const routes = [
+      {
+        path: "/login",
+        element: <Login />,
+      },
+    ];
+    const router = createMemoryRouter(routes, { initialEntries: ["/login"] });
     render(
       <QueryClientProvider client={queryClient}>
-        <Login />
+        <RouterProvider router={router} />
       </QueryClientProvider>
     );
+
     const user = userEvent.setup();
 
     await user.type(screen.getByLabelText("Email"), "test@mail.com");
