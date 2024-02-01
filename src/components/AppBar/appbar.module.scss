@@ -1,3 +1,9 @@
+.toolbar {
+  & :global .MuiToolbar-root {
+    padding-left: 10px;
+  }
+}
+
 .logo {
   margin-right: 8px;
 }

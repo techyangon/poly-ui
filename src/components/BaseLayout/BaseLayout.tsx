@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
 import Alert from "@mui/material/Alert";
@@ -6,38 +6,84 @@ import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Snackbar from "@mui/material/Snackbar";
 
-import { getAccessToken } from "../../api";
 import { useAuth } from "../../contexts/AuthContext";
+import useGetAccessToken from "../../hooks/useGetAccessToken";
+import useGetLocations, {
+  transformLocationData,
+} from "../../hooks/useGetLocations";
+import useGetPermissions, {
+  transformPermissionData,
+} from "../../hooks/useGetPermissions";
+import useBoundStore from "../../stores";
 import AppBar from "../AppBar/AppBar";
 import Navigation, { DrawerHeader } from "../Navigation/Navigation";
 
 import styles from "./baselayout.module.scss";
 
-import type { Permission } from "../../contexts/AuthContext";
-
 function BaseLayout() {
-  const { accessToken, setAccessToken, setPermissions, setUsername, username } =
-    useAuth();
+  const { setAccessToken, setUsername, username } = useAuth();
+  const { data: accessTokenData, error: accessTokenError } =
+    useGetAccessToken();
+
   const [openLogoutAlert, setOpenLogoutAlert] = useState(false);
   const navigate = useNavigate();
 
-  if (!accessToken) {
-    getAccessToken(username)
-      .then((response) => setAccessToken(response.access_token))
-      /* eslint-disable @typescript-eslint/no-unused-vars */
-      .catch((_) => {
-        setOpenLogoutAlert(true);
-        setTimeout(() => navigate("/login", { replace: true }), 3000);
-      });
+  const { data: permissionsData, error: permissionsDataError } =
+    useGetPermissions();
+  const updatePermissions = useBoundStore((state) => state.updatePermissions);
+  const updateRole = useBoundStore((state) => state.updateRole);
 
-    if (!username) {
-      navigate("/login", { replace: true });
+  const { data: locationData, error: locationDataError } = useGetLocations();
+  const updateCities = useBoundStore((state) => state.updateCities);
+  const updateStates = useBoundStore((state) => state.updateStates);
+  const updateTownships = useBoundStore((state) => state.updateTownships);
+
+  useEffect(() => {
+    if (accessTokenData) {
+      setAccessToken(accessTokenData.access_token);
+      setUsername(accessTokenData.name);
     }
+  }, [accessTokenData]);
+
+  /* Refresh token expiry */
+  useEffect(() => {
+    if (accessTokenError?.message === "Expired token") {
+      setOpenLogoutAlert(true);
+      setTimeout(() => navigate("/login", { replace: true }), 3000);
+    }
+  }, [accessTokenError]);
+
+  useEffect(() => {
+    if (permissionsData) {
+      updateRole(permissionsData.role);
+      updatePermissions(transformPermissionData(permissionsData));
+    }
+  }, [permissionsData]);
+
+  useEffect(() => {
+    if (locationData) {
+      const locations = transformLocationData(locationData);
+      updateCities(locations.cities);
+      updateStates(locations.states);
+      updateTownships(locations.townships);
+    }
+  }, [locationData]);
+
+  useEffect(() => {
+    if (
+      locationDataError?.message === "Expired token" ||
+      permissionsDataError?.message === "Expired token"
+    ) {
+      setAccessToken("");
+    }
+  }, [locationDataError, permissionsDataError]);
+
+  if (!username) {
+    navigate("/login", { replace: true });
   }
 
   const handleLogout = () => {
     setAccessToken("");
-    setPermissions({} as Permission);
     setUsername("");
   };
 

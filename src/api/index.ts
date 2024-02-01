@@ -1,8 +1,12 @@
 import { API_URL } from "../config";
 
-import type { ErrorResponse, LoginResponse, SuccessResponse } from "../types";
+export interface SuccessResponse {
+  message: string;
+}
 
-type UpdateResponse = SuccessResponse | ErrorResponse;
+interface ErrorResponse {
+  detail: string;
+}
 
 export interface UpdateDataProps<T> {
   accessToken: string;
@@ -11,7 +15,7 @@ export interface UpdateDataProps<T> {
   username: string;
 }
 
-const handleResponse = async <T>(response: Response): Promise<T> => {
+export const handleResponse = async <T>(response: Response): Promise<T> => {
   if (response.ok) {
     return (await response.json()) as T;
   } else if (response.status === 502) {
@@ -20,25 +24,6 @@ const handleResponse = async <T>(response: Response): Promise<T> => {
     const errorResponse = (await response.json()) as ErrorResponse;
     throw new Error(errorResponse.detail);
   }
-};
-
-const postLoginData = async (loginData: FormData): Promise<LoginResponse> => {
-  const response = await fetch(`${API_URL}/login`, {
-    body: loginData,
-    headers: { Accept: "application/json" },
-    method: "POST",
-  });
-
-  return await handleResponse<LoginResponse>(response);
-};
-
-const getAccessToken = async (username: string): Promise<LoginResponse> => {
-  const response = await fetch(`${API_URL}/token`, {
-    headers: { Accept: "application/json", "X-Username": username },
-    method: "GET",
-  });
-
-  return await handleResponse<LoginResponse>(response);
 };
 
 const getAllData = async <T>(
@@ -67,7 +52,7 @@ const updateData = async <T>({
   resource,
   payload,
   username,
-}: UpdateDataProps<T>): Promise<UpdateResponse> => {
+}: UpdateDataProps<T>): Promise<SuccessResponse> => {
   const response = await fetch(`${API_URL}/${resource}/`, {
     headers: {
       Accept: "application/json",
@@ -78,7 +63,7 @@ const updateData = async <T>({
     method: "PUT",
     body: JSON.stringify(payload),
   });
-  return await handleResponse<UpdateResponse>(response);
+  return await handleResponse<SuccessResponse>(response);
 };
 
-export { getAccessToken, getAllData, postLoginData, updateData };
+export { getAllData, updateData };

@@ -8,19 +8,47 @@ export const handlers = [
       {
         access_token: "eyABC.DEF.GHI",
         name: "user",
-        permissions: [
+      },
+      { status: 200 }
+    );
+  }),
+  http.get(/locations/, () => {
+    return HttpResponse.json(
+      {
+        states: [
           {
-            resource: "dashboard",
-            actions: ["GET"],
+            id: 1,
+            name: "State1",
+            cities: [
+              { id: 1, name: "City1", townships: [{ id: 1, name: "Tsp1" }] },
+            ],
           },
           {
-            resource: "branches",
-            actions: [],
+            id: 2,
+            name: "State2",
+            cities: [
+              { id: 2, name: "City2", townships: [{ id: 2, name: "Tsp2" }] },
+            ],
           },
         ],
       },
       { status: 200 }
     );
+  }),
+  http.get(/permissions/, () => {
+    return HttpResponse.json({
+      role: "admin",
+      permissions: [
+        {
+          resource: "dashboard",
+          actions: ["GET"],
+        },
+        {
+          resource: "branches",
+          actions: [],
+        },
+      ],
+    });
   }),
   http.get(/profile/, () => {
     return HttpResponse.json(
@@ -39,6 +67,12 @@ export const handlers = [
       { message: "User password is updated." },
       { status: 200 }
     );
+  }),
+  http.get(/token/, () => {
+    return HttpResponse.json({
+      access_token: "eyABC.DEF.GHI",
+      name: "user",
+    });
   }),
 ];
 

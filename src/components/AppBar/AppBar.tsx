@@ -1,6 +1,8 @@
 import { MouseEvent, useState } from "react";
 
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import Brightness4OutlinedIcon from "@mui/icons-material/Brightness4Outlined";
+import Brightness7OutlinedIcon from "@mui/icons-material/Brightness7Outlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import MuiAppBar from "@mui/material/AppBar";
@@ -11,6 +13,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { useColorScheme } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 
@@ -26,6 +29,8 @@ interface AppBarProps {
 
 function AppBar({ onLogout }: AppBarProps) {
   const { username } = useAuth();
+  const { mode, setMode } = useColorScheme();
+
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const handleMenuOpen = (event: MouseEvent<HTMLElement>) => {
@@ -37,9 +42,18 @@ function AppBar({ onLogout }: AppBarProps) {
     setAnchorEl(null);
   };
 
+  const handleToggleMode = () => {
+    /* istanbul ignore next */
+    setMode(mode === "light" ? "dark" : "light");
+  };
+
   return (
     <MuiAppBar>
-      <Container disableGutters={true} maxWidth={false}>
+      <Container
+        className={styles.toolbar}
+        disableGutters={true}
+        maxWidth={false}
+      >
         <Toolbar>
           <img className={styles.logo} src={Logo} />
           <Typography className={styles.logoText} component="div" variant="h5">
@@ -72,6 +86,18 @@ function AppBar({ onLogout }: AppBarProps) {
             >
               <MenuItem>{username}</MenuItem>
               <Divider />
+              <MenuItem className={styles.listItem} onClick={handleToggleMode}>
+                <ListItemIcon>
+                  {mode === "light" ? (
+                    <Brightness4OutlinedIcon />
+                  ) : (
+                    <Brightness7OutlinedIcon />
+                  )}
+                </ListItemIcon>
+                <ListItemText>
+                  {mode === "light" ? "Dark" : "Light"} mode
+                </ListItemText>
+              </MenuItem>
               <MenuItem
                 className={styles.listItem}
                 component={Link}

@@ -7,7 +7,7 @@ import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import { styled } from "@mui/material/styles";
 
-import { useAuth } from "../../contexts/AuthContext";
+import useBoundStore from "../../stores";
 
 import NavLink from "./NavLink";
 
@@ -20,7 +20,8 @@ export const DrawerHeader = styled("div")(({ theme }) => ({
 
 function Navigation() {
   const location = useLocation();
-  const { permissions } = useAuth();
+
+  const permissions = useBoundStore((state) => state.permissions);
 
   return (
     <Drawer className={styles.drawer} variant="permanent">

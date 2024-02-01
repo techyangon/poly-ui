@@ -5,6 +5,11 @@ import "@testing-library/jest-dom/vitest";
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
+import {
+  Experimental_CssVarsProvider as CssVarProvider,
+  experimental_extendTheme as extendTheme,
+} from "@mui/material/styles";
+
 import { AUTH_CHECK, AUTH_RESPONSE } from "../../config";
 import { AuthProvider } from "../../contexts/AuthContext";
 import { errorHandlers } from "../../mocks/handlers";
@@ -15,27 +20,49 @@ import Login from "./Login";
 
 import { queryClient, screen } from "test-utils";
 
+const theme = extendTheme();
+
 describe("Login form", () => {
   it("shows errors when values are empty", async () => {
+    const routes = [
+      {
+        path: "/login",
+        element: <Login />,
+      },
+    ];
+    const router = createMemoryRouter(routes, { initialEntries: ["/login"] });
     render(
-      <QueryClientProvider client={queryClient}>
-        <Login />
-      </QueryClientProvider>
+      <CssVarProvider theme={theme}>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </CssVarProvider>
     );
+
     const user = userEvent.setup();
 
     await user.click(screen.getByRole("button", { name: "Login" }));
 
     await screen.findByText(AUTH_CHECK.EMAIL.EMPTY);
-    await screen.findByText(AUTH_CHECK.PASSWORD.LENGTH);
+    await screen.findByText(AUTH_CHECK.PASSWORD.EMPTY);
   });
 
   it("shows error when email is invalid", async () => {
+    const routes = [
+      {
+        path: "/login",
+        element: <Login />,
+      },
+    ];
+    const router = createMemoryRouter(routes, { initialEntries: ["/login"] });
     render(
-      <QueryClientProvider client={queryClient}>
-        <Login />
-      </QueryClientProvider>
+      <CssVarProvider theme={theme}>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </CssVarProvider>
     );
+
     const user = userEvent.setup();
 
     await user.type(screen.getByLabelText("Email"), "test");
@@ -45,27 +72,47 @@ describe("Login form", () => {
   });
 
   it("shows error when password is shorter than specified", async () => {
+    const routes = [
+      {
+        path: "/login",
+        element: <Login />,
+      },
+    ];
+    const router = createMemoryRouter(routes, { initialEntries: ["/login"] });
     render(
-      <QueryClientProvider client={queryClient}>
-        <Login />
-      </QueryClientProvider>
+      <CssVarProvider theme={theme}>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </CssVarProvider>
     );
+
     const user = userEvent.setup();
 
-    await user.type(screen.getByLabelText("Password"), "pass");
+    await user.type(screen.getByLabelText("Password"), " ");
     await user.click(screen.getByRole("button", { name: "Login" }));
 
-    await screen.findByText(AUTH_CHECK.PASSWORD.LENGTH);
+    await screen.findByText(AUTH_CHECK.PASSWORD.EMPTY);
   });
 
   it("shows error when username or password is incorrect", async () => {
     server.use(...errorHandlers);
 
+    const routes = [
+      {
+        path: "/login",
+        element: <Login />,
+      },
+    ];
+    const router = createMemoryRouter(routes, { initialEntries: ["/login"] });
     render(
-      <QueryClientProvider client={queryClient}>
-        <Login />
-      </QueryClientProvider>
+      <CssVarProvider theme={theme}>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </CssVarProvider>
     );
+
     const user = userEvent.setup();
 
     await user.type(screen.getByLabelText("Email"), "test@mail.com");
@@ -98,11 +145,13 @@ describe("Login form", () => {
     ];
     const router = createMemoryRouter(routes, { initialEntries: ["/login"] });
     render(
-      <AuthProvider>
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
-        </QueryClientProvider>
-      </AuthProvider>
+      <CssVarProvider theme={theme}>
+        <AuthProvider>
+          <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router} />
+          </QueryClientProvider>
+        </AuthProvider>
+      </CssVarProvider>
     );
 
     const user = userEvent.setup();
@@ -133,11 +182,13 @@ describe("Login form", () => {
     ];
     const router = createMemoryRouter(routes, { initialEntries: ["/login"] });
     render(
-      <AuthProvider>
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
-        </QueryClientProvider>
-      </AuthProvider>
+      <CssVarProvider theme={theme}>
+        <AuthProvider>
+          <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router} />
+          </QueryClientProvider>
+        </AuthProvider>
+      </CssVarProvider>
     );
 
     const user = userEvent.setup();
@@ -146,7 +197,7 @@ describe("Login form", () => {
     await user.type(screen.getByLabelText("Password"), "password");
     await user.click(screen.getByRole("button", { name: "Login" }));
 
-    await screen.findByLabelText("Dashboard");
+    await screen.findByText("Profile");
     await waitFor(() =>
       expect(screen.queryByLabelText("Branches")).not.toBeInTheDocument()
     );
