@@ -8,6 +8,9 @@ import Snackbar from "@mui/material/Snackbar";
 
 import { useAuth } from "../../contexts/AuthContext";
 import useGetAccessToken from "../../hooks/useGetAccessToken";
+import useGetLocations, {
+  transformLocationData,
+} from "../../hooks/useGetLocations";
 import useGetPermissions, {
   transformPermissionData,
 } from "../../hooks/useGetPermissions";
@@ -29,6 +32,11 @@ function BaseLayout() {
     useGetPermissions();
   const updatePermissions = useBoundStore((state) => state.updatePermissions);
   const updateRole = useBoundStore((state) => state.updateRole);
+
+  const { data: locationData, error: locationDataError } = useGetLocations();
+  const updateCities = useBoundStore((state) => state.updateCities);
+  const updateStates = useBoundStore((state) => state.updateStates);
+  const updateTownships = useBoundStore((state) => state.updateTownships);
 
   useEffect(() => {
     if (accessTokenData) {
@@ -53,10 +61,22 @@ function BaseLayout() {
   }, [permissionsData]);
 
   useEffect(() => {
-    if (permissionsDataError?.message === "Expired token") {
+    if (locationData) {
+      const locations = transformLocationData(locationData);
+      updateCities(locations.cities);
+      updateStates(locations.states);
+      updateTownships(locations.townships);
+    }
+  }, [locationData]);
+
+  useEffect(() => {
+    if (
+      locationDataError?.message === "Expired token" ||
+      permissionsDataError?.message === "Expired token"
+    ) {
       setAccessToken("");
     }
-  }, [permissionsDataError]);
+  }, [locationDataError, permissionsDataError]);
 
   if (!username) {
     navigate("/login", { replace: true });
