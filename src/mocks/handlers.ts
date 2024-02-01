@@ -12,10 +12,19 @@ export const handlers = [
       { status: 200 }
     );
   }),
-  http.get(/token/, () => {
+  http.get(/permissions/, () => {
     return HttpResponse.json({
-      access_token: "eyABC.DEF.GHI",
-      name: "user",
+      role: "admin",
+      permissions: [
+        {
+          resource: "dashboard",
+          actions: ["GET"],
+        },
+        {
+          resource: "branches",
+          actions: [],
+        },
+      ],
     });
   }),
   http.get(/profile/, () => {
@@ -35,6 +44,12 @@ export const handlers = [
       { message: "User password is updated." },
       { status: 200 }
     );
+  }),
+  http.get(/token/, () => {
+    return HttpResponse.json({
+      access_token: "eyABC.DEF.GHI",
+      name: "user",
+    });
   }),
 ];
 
