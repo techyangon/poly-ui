@@ -8,52 +8,40 @@ import Snackbar from "@mui/material/Snackbar";
 
 import { useAuth } from "../../contexts/AuthContext";
 import useGetAccessToken from "../../hooks/useGetAccessToken";
-import useGetLocations from "../../hooks/useGetLocations";
-import { useProfileStore } from "../../store";
 import AppBar from "../AppBar/AppBar";
 import Navigation, { DrawerHeader } from "../Navigation/Navigation";
 
 import styles from "./baselayout.module.scss";
 
-import type { Permission } from "../../contexts/AuthContext";
-
 function BaseLayout() {
-  const { setAccessToken, setPermissions, setUsername, username } = useAuth();
+  const { setAccessToken, setUsername, username } = useAuth();
   const { data: accessTokenData, error: accessTokenError } =
     useGetAccessToken();
 
   const [openLogoutAlert, setOpenLogoutAlert] = useState(false);
   const navigate = useNavigate();
 
-  if (accessTokenData) {
-    setAccessToken(accessTokenData.access_token);
-    setUsername(accessTokenData.name);
-  }
-  if (accessTokenError && accessTokenError.message === "Expired token") {
-    setOpenLogoutAlert(true);
-    setTimeout(() => navigate("/login", { replace: true }), 3000);
-  }
+  useEffect(() => {
+    if (accessTokenData) {
+      setAccessToken(accessTokenData.access_token);
+      setUsername(accessTokenData.name);
+    }
+  }, [accessTokenData]);
+
+  /* Refresh token expiry */
+  useEffect(() => {
+    if (accessTokenError?.message === "Expired token") {
+      setOpenLogoutAlert(true);
+      setTimeout(() => navigate("/login", { replace: true }), 3000);
+    }
+  }, [accessTokenError]);
+
   if (!username) {
     navigate("/login", { replace: true });
   }
 
-  const { data: locationData, error: locationError } = useGetLocations();
-  const updateLocations = useProfileStore((state) => state.updateLocations);
-
-  if (locationError && locationError.message === "Expired token") {
-    setAccessToken("");
-  }
-
-  /* Update store */
-  useEffect(() => {
-    if (locationData) {
-      updateLocations(locationData);
-    }
-  }, [locationData]);
-
   const handleLogout = () => {
     setAccessToken("");
-    setPermissions({} as Permission);
     setUsername("");
   };
 

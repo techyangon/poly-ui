@@ -1,5 +1,6 @@
+import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -47,22 +48,28 @@ function Login() {
     resolver: zodResolver(loginRules),
   });
 
-  const { accessToken, setAccessToken, setUsername } = useAuth();
+  const { setAccessToken, setUsername } = useAuth();
 
   const { data, mutate, error: loginError } = usePostLogin();
 
-  if (data) {
-    setAccessToken(data.access_token);
-    setUsername(data.name);
-  }
+  const navigate = useNavigate();
 
-  if (accessToken) {
-    return <Navigate to="/home/profile" replace={true} />;
-  }
+  useEffect(() => {
+    if (data) {
+      setAccessToken(data.access_token);
+      setUsername(data.name);
+      navigate("/home/profile", { replace: true });
+    }
+  }, [data]);
 
-  if (loginError) {
-    setError("root.serverError", { type: "401", message: loginError.message });
-  }
+  useEffect(() => {
+    if (loginError) {
+      setError("root.serverError", {
+        type: "401",
+        message: loginError.message,
+      });
+    }
+  }, [loginError]);
 
   const onSubmit: SubmitHandler<LoginInput> = (data) => {
     clearErrors();
