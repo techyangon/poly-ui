@@ -5,6 +5,11 @@ import "@testing-library/jest-dom/vitest";
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
+import {
+  Experimental_CssVarsProvider as CssVarProvider,
+  experimental_extendTheme as extendTheme,
+} from "@mui/material/styles";
+
 import { AUTH_CHECK, AUTH_RESPONSE } from "../../config";
 import { AuthProvider } from "../../contexts/AuthContext";
 import { errorHandlers } from "../../mocks/handlers";
@@ -14,6 +19,8 @@ import BaseLayout from "../BaseLayout/BaseLayout";
 import Login from "./Login";
 
 import { queryClient, screen } from "test-utils";
+
+const theme = extendTheme();
 
 describe("Login form", () => {
   it("shows errors when values are empty", async () => {
@@ -25,9 +32,11 @@ describe("Login form", () => {
     ];
     const router = createMemoryRouter(routes, { initialEntries: ["/login"] });
     render(
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
+      <CssVarProvider theme={theme}>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </CssVarProvider>
     );
 
     const user = userEvent.setup();
@@ -47,9 +56,11 @@ describe("Login form", () => {
     ];
     const router = createMemoryRouter(routes, { initialEntries: ["/login"] });
     render(
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
+      <CssVarProvider theme={theme}>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </CssVarProvider>
     );
 
     const user = userEvent.setup();
@@ -69,9 +80,11 @@ describe("Login form", () => {
     ];
     const router = createMemoryRouter(routes, { initialEntries: ["/login"] });
     render(
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
+      <CssVarProvider theme={theme}>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </CssVarProvider>
     );
 
     const user = userEvent.setup();
@@ -93,9 +106,11 @@ describe("Login form", () => {
     ];
     const router = createMemoryRouter(routes, { initialEntries: ["/login"] });
     render(
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
+      <CssVarProvider theme={theme}>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </CssVarProvider>
     );
 
     const user = userEvent.setup();
@@ -130,11 +145,13 @@ describe("Login form", () => {
     ];
     const router = createMemoryRouter(routes, { initialEntries: ["/login"] });
     render(
-      <AuthProvider>
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
-        </QueryClientProvider>
-      </AuthProvider>
+      <CssVarProvider theme={theme}>
+        <AuthProvider>
+          <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router} />
+          </QueryClientProvider>
+        </AuthProvider>
+      </CssVarProvider>
     );
 
     const user = userEvent.setup();
@@ -165,11 +182,13 @@ describe("Login form", () => {
     ];
     const router = createMemoryRouter(routes, { initialEntries: ["/login"] });
     render(
-      <AuthProvider>
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
-        </QueryClientProvider>
-      </AuthProvider>
+      <CssVarProvider theme={theme}>
+        <AuthProvider>
+          <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router} />
+          </QueryClientProvider>
+        </AuthProvider>
+      </CssVarProvider>
     );
 
     const user = userEvent.setup();

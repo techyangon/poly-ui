@@ -42,4 +42,27 @@ describe("Homepage", () => {
       expect(screen.queryByLabelText("Branches")).not.toBeInTheDocument()
     );
   });
+
+  it("toggles theme", async () => {
+    const routes = [
+      {
+        path: "/home",
+        element: <BaseLayout />,
+      },
+    ];
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/home"],
+    });
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    const profileButton = screen.getByLabelText("profile");
+    await user.click(profileButton);
+
+    const toggleBtn = await screen.findByText("Dark mode");
+    await user.click(toggleBtn);
+
+    await screen.findByText("Light mode");
+  });
 });

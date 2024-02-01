@@ -5,11 +5,15 @@ import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
+import Brightness4OutlinedIcon from "@mui/icons-material/Brightness4Outlined";
+import Brightness7OutlinedIcon from "@mui/icons-material/Brightness7Outlined";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
+import IconButton from "@mui/material/IconButton";
+import { useColorScheme } from "@mui/material/styles";
 
 import { AUTH_CHECK } from "../../config";
 import { useAuth } from "../../contexts/AuthContext";
@@ -48,6 +52,8 @@ function Login() {
     resolver: zodResolver(loginRules),
   });
 
+  const { mode, setMode } = useColorScheme();
+
   const { setAccessToken, setUsername } = useAuth();
 
   const { data, mutate, error: loginError } = usePostLogin();
@@ -71,6 +77,11 @@ function Login() {
     }
   }, [loginError]);
 
+  const handleToggleMode = () => {
+    /* istanbul ignore next */
+    setMode(mode === "light" ? "dark" : "light");
+  };
+
   const onSubmit: SubmitHandler<LoginInput> = (data) => {
     clearErrors();
 
@@ -85,6 +96,15 @@ function Login() {
     <Container className={styles.mainContainer} component="main">
       <CssBaseline />
       <Box>
+        <Box className={styles.toggleBtnContainer} component="div">
+          <IconButton aria-label="switch theme" onClick={handleToggleMode}>
+            {mode === "light" ? (
+              <Brightness4OutlinedIcon />
+            ) : (
+              <Brightness7OutlinedIcon />
+            )}
+          </IconButton>
+        </Box>
         <form
           className={styles.formContainer}
           onSubmit={handleSubmit(onSubmit)}
