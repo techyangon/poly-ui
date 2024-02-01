@@ -8,19 +8,15 @@ export const handlers = [
       {
         access_token: "eyABC.DEF.GHI",
         name: "user",
-        permissions: [
-          {
-            resource: "dashboard",
-            actions: ["GET"],
-          },
-          {
-            resource: "branches",
-            actions: [],
-          },
-        ],
       },
       { status: 200 }
     );
+  }),
+  http.get(/token/, () => {
+    return HttpResponse.json({
+      access_token: "eyABC.DEF.GHI",
+      name: "user",
+    });
   }),
   http.get(/profile/, () => {
     return HttpResponse.json(
