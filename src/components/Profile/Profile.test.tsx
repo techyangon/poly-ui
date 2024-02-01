@@ -60,6 +60,30 @@ describe("Profile", () => {
 
     await user.clear(newPasswordField);
 
+    await user.type(newPasswordField, "Ab#7 ");
+    await user.click(updatePasswordBtn);
+    await screen.findByText(PASSWORD_CHECK.SPACES);
+
+    await user.clear(newPasswordField);
+
+    await user.type(newPasswordField, " Ab#7");
+    await user.click(updatePasswordBtn);
+    await screen.findByText(PASSWORD_CHECK.SPACES);
+
+    await user.clear(newPasswordField);
+
+    await user.type(newPasswordField, "Ab #7");
+    await user.click(updatePasswordBtn);
+    await screen.findByText(PASSWORD_CHECK.SPACES);
+
+    await user.clear(newPasswordField);
+
+    await user.type(newPasswordField, " Ab #7 ");
+    await user.click(updatePasswordBtn);
+    await screen.findByText(PASSWORD_CHECK.SPACES);
+
+    await user.clear(newPasswordField);
+
     await user.type(newPasswordField, "Abc#ef7H");
     await user.click(updatePasswordBtn);
     await screen.findByText(PASSWORD_CHECK.MATCH);

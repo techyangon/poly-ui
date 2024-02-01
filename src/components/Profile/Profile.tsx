@@ -5,6 +5,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 
+import UpdatePasswordForm from "./UpdatePasswordForm";
 import UserInfo from "./UserInfo";
 
 import styles from "./profile.module.scss";
@@ -24,6 +25,7 @@ function Profile() {
           <UserInfo />
         </AccordionDetails>
       </Accordion>
+      <UpdatePasswordForm />
     </Container>
   );
 }

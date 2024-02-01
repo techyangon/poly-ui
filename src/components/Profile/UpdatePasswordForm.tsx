@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -15,22 +14,16 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Unstable_Grid2";
 
-import { updateData } from "../../api";
 import { PASSWORD_CHECK } from "../../config";
 import { useAuth } from "../../contexts/AuthContext";
-import { useProfileStore } from "../../store";
+import useUpdatePassword from "../../hooks/useUpdatePassword";
+import useBoundStore from "../../stores";
 import PasswordInput from "../common/PasswordInput";
 
 import styles from "./profile.module.scss";
 
 export interface UpdatePassword {
   confirm_password: string;
-  current_password: string;
-  new_password: string;
-}
-
-interface UpdatePasswordPayload {
-  id: number;
   current_password: string;
   new_password: string;
 }
@@ -51,6 +44,9 @@ const updatePasswordRules = z
       })
       .regex(new RegExp(/.*[\W].*/), {
         message: PASSWORD_CHECK.SPECIAL,
+      })
+      .regex(new RegExp(/^\S*$/), {
+        message: PASSWORD_CHECK.SPACES,
       })
       .min(8, { message: PASSWORD_CHECK.LENGTH }),
     confirm_password: z.string(),
@@ -73,29 +69,35 @@ function UpdatePasswordForm() {
   });
   const { accessToken, username } = useAuth();
   const [showAlert, setShowAlert] = useState(false);
-  const userInfo = useProfileStore((state) => state.userInfo);
 
-  const updatePassword = useMutation({
-    mutationFn: updateData<UpdatePasswordPayload>,
-    onError: (error) =>
-      setError("current_password", { message: error.message }),
-    onSuccess: () => {
+  const id = useBoundStore((state) => state.id);
+
+  const { data, mutate, error: updateError } = useUpdatePassword();
+
+  useEffect(() => {
+    if (data) {
       setShowAlert(true);
       reset(defaultValues);
-    },
-  });
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (updateError) {
+      setError("current_password", { message: updateError.message });
+    }
+  }, [updateError]);
 
   const onSubmit: SubmitHandler<UpdatePassword> = (data) => {
     clearErrors();
 
-    updatePassword.mutate({
+    mutate({
       accessToken: accessToken,
-      resource: "profile",
       payload: {
-        id: userInfo.id,
         current_password: data.current_password,
+        id: id,
         new_password: data.new_password,
       },
+      resource: "profile",
       username: username,
     });
   };

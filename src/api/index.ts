@@ -1,8 +1,12 @@
 import { API_URL } from "../config";
 
-import type { ErrorResponse, SuccessResponse } from "../types";
+export interface SuccessResponse {
+  message: string;
+}
 
-type UpdateResponse = SuccessResponse | ErrorResponse;
+interface ErrorResponse {
+  detail: string;
+}
 
 export interface UpdateDataProps<T> {
   accessToken: string;
@@ -48,7 +52,7 @@ const updateData = async <T>({
   resource,
   payload,
   username,
-}: UpdateDataProps<T>): Promise<UpdateResponse> => {
+}: UpdateDataProps<T>): Promise<SuccessResponse> => {
   const response = await fetch(`${API_URL}/${resource}/`, {
     headers: {
       Accept: "application/json",
@@ -59,7 +63,7 @@ const updateData = async <T>({
     method: "PUT",
     body: JSON.stringify(payload),
   });
-  return await handleResponse<UpdateResponse>(response);
+  return await handleResponse<SuccessResponse>(response);
 };
 
 export { getAllData, updateData };
