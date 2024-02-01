@@ -8,6 +8,10 @@ import Snackbar from "@mui/material/Snackbar";
 
 import { useAuth } from "../../contexts/AuthContext";
 import useGetAccessToken from "../../hooks/useGetAccessToken";
+import useGetPermissions, {
+  transformPermissionData,
+} from "../../hooks/useGetPermissions";
+import useBoundStore from "../../stores";
 import AppBar from "../AppBar/AppBar";
 import Navigation, { DrawerHeader } from "../Navigation/Navigation";
 
@@ -20,6 +24,11 @@ function BaseLayout() {
 
   const [openLogoutAlert, setOpenLogoutAlert] = useState(false);
   const navigate = useNavigate();
+
+  const { data: permissionsData, error: permissionsDataError } =
+    useGetPermissions();
+  const updatePermissions = useBoundStore((state) => state.updatePermissions);
+  const updateRole = useBoundStore((state) => state.updateRole);
 
   useEffect(() => {
     if (accessTokenData) {
@@ -35,6 +44,19 @@ function BaseLayout() {
       setTimeout(() => navigate("/login", { replace: true }), 3000);
     }
   }, [accessTokenError]);
+
+  useEffect(() => {
+    if (permissionsData) {
+      updateRole(permissionsData.role);
+      updatePermissions(transformPermissionData(permissionsData));
+    }
+  }, [permissionsData]);
+
+  useEffect(() => {
+    if (permissionsDataError?.message === "Expired token") {
+      setAccessToken("");
+    }
+  }, [permissionsDataError]);
 
   if (!username) {
     navigate("/login", { replace: true });
