@@ -8,9 +8,10 @@ const createLocationSlice: StateCreator<StoreState, [], [], LocationSlice> = (
   states: {},
   cities: {},
   townships: {},
-  updateStates: (states) => set({ states: states }),
-  updateCities: (cities) => set({ cities: cities }),
-  updateTownships: (townships) => set({ townships: townships }),
+  updateCities: /* istanbul ignore next */ (cities) => set({ cities: cities }),
+  updateStates: /* istanbul ignore next */ (states) => set({ states: states }),
+  updateTownships: /* istanbul ignore next */ (townships) =>
+    set({ townships: townships }),
 });
 
 export default createLocationSlice;

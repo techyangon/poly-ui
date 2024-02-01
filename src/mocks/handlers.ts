@@ -12,6 +12,29 @@ export const handlers = [
       { status: 200 }
     );
   }),
+  http.get(/locations/, () => {
+    return HttpResponse.json(
+      {
+        states: [
+          {
+            id: 1,
+            name: "State1",
+            cities: [
+              { id: 1, name: "City1", townships: [{ id: 1, name: "Tsp1" }] },
+            ],
+          },
+          {
+            id: 2,
+            name: "State2",
+            cities: [
+              { id: 2, name: "City2", townships: [{ id: 2, name: "Tsp2" }] },
+            ],
+          },
+        ],
+      },
+      { status: 200 }
+    );
+  }),
   http.get(/permissions/, () => {
     return HttpResponse.json({
       role: "admin",

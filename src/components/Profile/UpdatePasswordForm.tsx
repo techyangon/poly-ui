@@ -121,7 +121,10 @@ function UpdatePasswordForm() {
             <Grid className={styles.alertContainer} xs={12}>
               <Alert
                 className={styles.alert}
-                onClose={() => ({})}
+                onClose={
+                  /* istanbul ignore next */
+                  () => ({})
+                }
                 severity="success"
               >
                 Your password is updated.

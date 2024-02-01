@@ -3,9 +3,12 @@ import React, { ReactElement } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RenderOptions, render } from "@testing-library/react";
 
-import { AuthContext } from "../src/contexts/AuthContext";
+import {
+  Experimental_CssVarsProvider as CssVarProvider,
+  experimental_extendTheme as extendTheme,
+} from "@mui/material/styles";
 
-import type { Permission } from "../src/contexts/AuthContext";
+import { AuthContext } from "../src/contexts/AuthContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -14,33 +17,24 @@ const queryClient = new QueryClient({
     },
   },
 });
-
-const permissions = {
-  audit: [],
-  branches: [],
-  dashboard: ["GET"],
-  locations: [],
-  roles: [],
-  resources: [],
-  schedules: [],
-  staff: [],
-  students: [],
-} as Permission;
+const theme = extendTheme();
 
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   return (
-    <AuthContext.Provider
-      value={{
-        accessToken: "eyABC.DEF.GHI",
-        permissions: permissions,
-        setAccessToken: () => undefined,
-        setPermissions: () => undefined,
-        setUsername: () => undefined,
-        username: "user",
-      }}
-    >
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    </AuthContext.Provider>
+    <CssVarProvider theme={theme}>
+      <AuthContext.Provider
+        value={{
+          accessToken: "eyABC.DEF.GHI",
+          setAccessToken: () => undefined,
+          setUsername: () => undefined,
+          username: "user",
+        }}
+      >
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
+      </AuthContext.Provider>
+    </CssVarProvider>
   );
 };
 
