@@ -199,7 +199,7 @@ describe("Login form", () => {
 
     await screen.findByText("Profile");
     await waitFor(() =>
-      expect(screen.queryByLabelText("Branches")).not.toBeInTheDocument()
+      expect(screen.queryByLabelText("Dashboard")).not.toBeInTheDocument()
     );
   });
 });

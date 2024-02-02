@@ -37,9 +37,9 @@ describe("Homepage", () => {
     const router = createMemoryRouter(routes, { initialEntries: ["/home"] });
     render(<RouterProvider router={router} />);
 
-    await screen.findByLabelText("Dashboard");
+    await screen.findByLabelText("Branches");
     await waitFor(() =>
-      expect(screen.queryByLabelText("Branches")).not.toBeInTheDocument()
+      expect(screen.queryByLabelText("Dashboard")).not.toBeInTheDocument()
     );
   });
 

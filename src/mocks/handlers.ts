@@ -36,19 +36,22 @@ export const handlers = [
     );
   }),
   http.get(/permissions/, () => {
-    return HttpResponse.json({
-      role: "admin",
-      permissions: [
-        {
-          resource: "dashboard",
-          actions: ["GET"],
-        },
-        {
-          resource: "branches",
-          actions: [],
-        },
-      ],
-    });
+    return HttpResponse.json(
+      {
+        role: "admin",
+        permissions: [
+          {
+            resource: "dashboard",
+            actions: [],
+          },
+          {
+            resource: "branches",
+            actions: ["DELETE", "GET", "POST", "PUT"],
+          },
+        ],
+      },
+      { status: 200 }
+    );
   }),
   http.get(/profile/, () => {
     return HttpResponse.json(
