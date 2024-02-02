@@ -15,7 +15,7 @@ interface Branch {
 }
 
 interface BranchesResponse {
-  branches: Branch[];
+  branches: Branch[] | never[];
   total: number;
 }
 

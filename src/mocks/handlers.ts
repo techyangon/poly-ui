@@ -83,6 +83,20 @@ export const errorHandlers = [
   http.post(/login/, () => {
     return HttpResponse.json({ detail: AUTH_RESPONSE.ERROR }, { status: 401 });
   }),
+  http.get(/permissions/, () => {
+    return HttpResponse.json(
+      {
+        role: "staff",
+        permissions: [
+          {
+            resource: "branches",
+            actions: ["GET"],
+          },
+        ],
+      },
+      { status: 200 }
+    );
+  }),
   http.put(/profile/, () => {
     return HttpResponse.json(
       { detail: PROFILE_RESPONSE.ERROR },
