@@ -14,7 +14,6 @@ import useGetBranches from "../../hooks/useGetBranches";
 function BranchesTable() {
   const [page, setPage] = useState(0);
   const [id, setID] = useState(0);
-
   const { data } = useGetBranches({ id: id, per_page: 10 });
 
   const handleChangePage = (
@@ -57,7 +56,7 @@ function BranchesTable() {
       </TableContainer>
       <TablePagination
         component="div"
-        count={11}
+        count={data?.total ?? 0}
         onPageChange={handleChangePage}
         page={page}
         rowsPerPage={10}

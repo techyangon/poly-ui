@@ -21,9 +21,12 @@ import Navigation, { DrawerHeader } from "../Navigation/Navigation";
 import styles from "./baselayout.module.scss";
 
 function BaseLayout() {
-  const { setAccessToken, setUsername, username } = useAuth();
-  const { data: accessTokenData, error: accessTokenError } =
-    useGetAccessToken();
+  const { accessToken, setAccessToken, setUsername } = useAuth();
+  const {
+    data: accessTokenData,
+    error: accessTokenError,
+    refetch,
+  } = useGetAccessToken();
 
   const [openLogoutAlert, setOpenLogoutAlert] = useState(false);
   const navigate = useNavigate();
@@ -39,6 +42,12 @@ function BaseLayout() {
   const updateTownships = useBoundStore((state) => state.updateTownships);
 
   useEffect(() => {
+    if (accessToken === "") {
+      void (async () => await refetch())();
+    }
+  }, [accessToken]);
+
+  useEffect(() => {
     if (accessTokenData) {
       setAccessToken(accessTokenData.access_token);
       setUsername(accessTokenData.name);
@@ -49,7 +58,10 @@ function BaseLayout() {
   useEffect(() => {
     if (accessTokenError?.message === "Expired token") {
       setOpenLogoutAlert(true);
-      setTimeout(() => navigate("/login", { replace: true }), 3000);
+      setTimeout(() => {
+        navigate("/");
+        navigate(0);
+      }, 3000);
     }
   }, [accessTokenError]);
 
@@ -78,13 +90,10 @@ function BaseLayout() {
     }
   }, [locationDataError, permissionsDataError]);
 
-  if (!username) {
-    navigate("/login", { replace: true });
-  }
-
   const handleLogout = () => {
     setAccessToken("");
     setUsername("");
+    navigate("/login", { replace: true });
   };
 
   const handleCloseAlert = () => {
