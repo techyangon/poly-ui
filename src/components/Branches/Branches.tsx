@@ -7,6 +7,8 @@ import Typography from "@mui/material/Typography";
 import { Actions } from "../../hooks/useGetPermissions";
 import useBoundStore from "../../stores";
 
+import BranchesTable from "./BranchesTable";
+
 import styles from "./branches.module.scss";
 
 function Branches() {
@@ -26,6 +28,7 @@ function Branches() {
           </Button>
         )}
       </Box>
+      <BranchesTable />
     </Container>
   );
 }

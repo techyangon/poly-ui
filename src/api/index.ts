@@ -34,7 +34,7 @@ const getAllData = async <T>(
   username: string
 ): Promise<T> => {
   const response = await fetch(
-    `${API_URL}/${resource}/?skip=${skip}&limit=${limit}`,
+    `${API_URL}/${resource}/?id=${skip}&per_page=${limit}`,
     {
       headers: {
         Accept: "application/json",

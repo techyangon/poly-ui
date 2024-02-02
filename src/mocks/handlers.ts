@@ -3,6 +3,35 @@ import { HttpResponse, http } from "msw";
 import { AUTH_RESPONSE, PROFILE_RESPONSE } from "../config";
 
 export const handlers = [
+  http.get(/branches/, () => {
+    return HttpResponse.json(
+      {
+        branches: [
+          {
+            id: 1,
+            name: "Branch1",
+            address: "Address1",
+            township: "Tsp1",
+            city: "City1",
+            state: "State1",
+            created_by: "user",
+            updated_at: "2024-01-01T00:00:00.000000Z",
+          },
+          {
+            id: 2,
+            name: "Branch2",
+            address: "Address2",
+            township: "Tsp2",
+            city: "City2",
+            state: "State2",
+            created_by: "user",
+            updated_at: "2024-01-01T00:00:00.000000Z",
+          },
+        ],
+      },
+      { status: 200 }
+    );
+  }),
   http.post(/login/, () => {
     return HttpResponse.json(
       {

@@ -58,4 +58,32 @@ describe("Branches", () => {
       ).not.toBeInTheDocument();
     });
   });
+
+  it("renders table data correctly", async () => {
+    const routes = [
+      {
+        path: "/home",
+        element: <BaseLayout />,
+        children: [
+          {
+            path: "branches",
+            element: <Branches />,
+          },
+        ],
+      },
+    ];
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/home/branches"],
+    });
+
+    render(<RouterProvider router={router} />);
+
+    /* 1 Header row + 2 Data row */
+    await waitFor(() => {
+      expect(screen.queryAllByRole("row").length).toEqual(3);
+
+      expect(screen.getByText("Branch1")).toBeInTheDocument();
+      expect(screen.getByText("Branch2")).toBeInTheDocument();
+    });
+  });
 });
