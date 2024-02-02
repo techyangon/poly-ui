@@ -6,7 +6,7 @@ function Root() {
   const { accessToken } = useAuth();
 
   if (accessToken) {
-    return <Navigate to="/home/dashboard" replace={true} />;
+    return <Navigate to="/home/profile" replace={true} />;
   } else {
     return <Navigate to="/login" replace={true} />;
   }

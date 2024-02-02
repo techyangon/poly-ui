@@ -113,7 +113,12 @@ function BaseLayout() {
           onClose={handleCloseAlert}
           open={openLogoutAlert}
         >
-          <Alert className={styles.alert} severity="warning" variant="filled">
+          <Alert
+            className={styles.alert}
+            onClose={handleCloseAlert}
+            severity="warning"
+            variant="filled"
+          >
             Your session has expired. Redirecting you to login.
           </Alert>
         </Snackbar>

@@ -126,10 +126,19 @@ export const errorHandlers = [
       { status: 200 }
     );
   }),
+  http.get(/locations/, () => {
+    return HttpResponse.json({ detail: "Expired token" }, { status: 401 });
+  }),
+  http.get(/profile/, () => {
+    return HttpResponse.json({ detail: "Expired token" }, { status: 401 });
+  }),
   http.put(/profile/, () => {
     return HttpResponse.json(
       { detail: PROFILE_RESPONSE.ERROR },
       { status: 400 }
     );
+  }),
+  http.get(/token/, () => {
+    return HttpResponse.json({ detail: "Expired token" }, { status: 401 });
   }),
 ];
