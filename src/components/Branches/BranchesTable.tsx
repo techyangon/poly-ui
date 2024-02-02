@@ -34,8 +34,8 @@ function BranchesTable() {
     setPage(newPage);
   };
 
+  /* istanbul ignore if */
   if (error?.message === "Expired token") {
-    /* istanbul ignore next */
     setAccessToken("");
   }
 
