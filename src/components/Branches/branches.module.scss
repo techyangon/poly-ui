@@ -1,0 +1,10 @@
+.heading {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1em;
+}
+
+.no-branches {
+  text-align: center;
+  color: var(--mui-palette-grey-700);
+}

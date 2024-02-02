@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import BaseLayout from "./components/BaseLayout/BaseLayout";
+import Branches from "./components/Branches/Branches";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Login from "./components/Login/Login";
 import Profile from "./components/Profile/Profile";
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: <Profile />,
+      },
+      {
+        path: "branches",
+        element: <Branches />,
       },
     ],
   },

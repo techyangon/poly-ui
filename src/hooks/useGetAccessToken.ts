@@ -23,12 +23,11 @@ const getAccessToken = async (
 };
 
 function useGetAccessToken() {
-  const { accessToken, username } = useAuth();
+  const { username } = useAuth();
 
   return useQuery<AccessTokenResponse, Error>({
     queryKey: ["accessToken", username],
     queryFn: async () => getAccessToken(username),
-    enabled: accessToken !== "",
   });
 }
 
