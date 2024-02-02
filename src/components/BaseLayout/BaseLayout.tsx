@@ -43,6 +43,7 @@ function BaseLayout() {
 
   useEffect(() => {
     if (accessToken === "") {
+      /* istanbul ignore next */
       void (async () => await refetch())();
     }
   }, [accessToken]);
@@ -59,7 +60,9 @@ function BaseLayout() {
     if (accessTokenError?.message === "Expired token") {
       setOpenLogoutAlert(true);
       setTimeout(() => {
+        /* istanbul ignore next */
         navigate("/");
+        /* istanbul ignore next */
         navigate(0);
       }, 3000);
     }

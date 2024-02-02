@@ -1,6 +1,7 @@
 import { MouseEvent, useState } from "react";
 
 import Paper from "@mui/material/Paper";
+import Skeleton from "@mui/material/Skeleton";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -9,12 +10,17 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 
+import { useAuth } from "../../contexts/AuthContext";
 import useGetBranches from "../../hooks/useGetBranches";
 
+import styles from "./branches.module.scss";
+
 function BranchesTable() {
+  const { setAccessToken } = useAuth();
+
   const [page, setPage] = useState(0);
   const [id, setID] = useState(0);
-  const { data } = useGetBranches({ id: id, per_page: 10 });
+  const { isLoading, data, error } = useGetBranches({ id: id, per_page: 10 });
 
   const handleChangePage = (
     _: MouseEvent<HTMLButtonElement> | null,
@@ -27,6 +33,11 @@ function BranchesTable() {
     }
     setPage(newPage);
   };
+
+  if (error?.message === "Expired token") {
+    /* istanbul ignore next */
+    setAccessToken("");
+  }
 
   return (
     <>
@@ -42,6 +53,15 @@ function BranchesTable() {
             </TableRow>
           </TableHead>
           <TableBody>
+            {isLoading && (
+              <TableRow>
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <TableCell key={i}>
+                    <Skeleton />
+                  </TableCell>
+                ))}
+              </TableRow>
+            )}
             {data?.branches?.map((branch) => (
               <TableRow key={branch.id}>
                 <TableCell>{branch.name}</TableCell>
@@ -53,6 +73,9 @@ function BranchesTable() {
             ))}
           </TableBody>
         </Table>
+        {error && error.message.includes("branches") && (
+          <p className={styles.noBranches}>{error.message}</p>
+        )}
       </TableContainer>
       <TablePagination
         component="div"

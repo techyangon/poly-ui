@@ -86,4 +86,27 @@ describe("Branches", () => {
       expect(screen.getByText("Branch2")).toBeInTheDocument();
     });
   });
+
+  it("informs the user when there is no data", async () => {
+    server.use(...errorHandlers);
+    const routes = [
+      {
+        path: "/home",
+        element: <BaseLayout />,
+        children: [
+          {
+            path: "branches",
+            element: <Branches />,
+          },
+        ],
+      },
+    ];
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/home/branches"],
+    });
+
+    render(<RouterProvider router={router} />);
+
+    await screen.findByText("There are no existing branches.");
+  });
 });

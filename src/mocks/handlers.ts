@@ -109,6 +109,12 @@ export const handlers = [
 ];
 
 export const errorHandlers = [
+  http.get(/branches/, () => {
+    return HttpResponse.json(
+      { detail: "There are no existing branches." },
+      { status: 404 }
+    );
+  }),
   http.post(/login/, () => {
     return HttpResponse.json({ detail: AUTH_RESPONSE.ERROR }, { status: 401 });
   }),
