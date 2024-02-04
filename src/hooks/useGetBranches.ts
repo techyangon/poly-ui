@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllData } from "../api";
 import { useAuth } from "../contexts/AuthContext";
 
-interface Branch {
+export interface Branch {
   address: string;
   city: string;
   created_by: string;

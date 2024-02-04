@@ -33,7 +33,7 @@ function ReadonlyInput<T extends FieldValues>({
       aria-label={field.name}
       className={styles.inputField}
       fullWidth={true}
-      helperText=" "
+      helperText=""
       id={field.name}
       hiddenLabel={true}
       name={field.name}

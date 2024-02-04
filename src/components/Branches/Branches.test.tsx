@@ -1,5 +1,8 @@
 import { RouterProvider, createMemoryRouter } from "react-router-dom";
 
+import { within } from "@testing-library/dom";
+import { userEvent } from "@testing-library/user-event";
+
 import { errorHandlers } from "../../mocks/handlers";
 import { server } from "../../mocks/server";
 import BaseLayout from "../BaseLayout/BaseLayout";
@@ -108,5 +111,49 @@ describe("Branches", () => {
     render(<RouterProvider router={router} />);
 
     await screen.findByText("There are no existing branches.");
+  });
+
+  it("shows the form for row details", async () => {
+    const routes = [
+      {
+        path: "/home",
+        element: <BaseLayout />,
+        children: [
+          {
+            path: "branches",
+            element: <Branches />,
+          },
+        ],
+      },
+    ];
+    const router = createMemoryRouter(routes, {
+      initialEntries: ["/home/branches"],
+    });
+    const { baseElement } = render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    const row1Btn = await screen.findByLabelText("view Branch1 data");
+    await user.click(row1Btn);
+
+    const drawer = within(baseElement).getByTestId("row-data");
+
+    expect(within(drawer).getByLabelText("Name")).toHaveValue("Branch1");
+    expect(within(drawer).getByLabelText("Address")).toHaveValue("Address1");
+    expect(within(drawer).getByLabelText("Township")).toHaveValue("Tsp1");
+    expect(within(drawer).getByLabelText("City")).toHaveValue("City1");
+    expect(within(drawer).getByLabelText("State")).toHaveValue("State1");
+    expect(within(drawer).getByLabelText("Created By")).toHaveValue("user");
+    expect(within(drawer).getByLabelText("Updated At")).toHaveValue(
+      "01/01/2024"
+    );
+
+    await user.click(screen.getByLabelText("close drawer"));
+
+    await waitFor(() => {
+      expect(
+        within(baseElement).queryByTestId("row-data")
+      ).not.toBeInTheDocument();
+    });
   });
 });
