@@ -7,8 +7,6 @@ import {
 
 import TextField from "@mui/material/TextField";
 
-import styles from "./input.module.scss";
-
 export interface InputProps<T extends FieldValues>
   extends UseControllerProps<T> {
   control: Control<T>;
@@ -23,7 +21,6 @@ function Input<T extends FieldValues>({ control, name }: InputProps<T>) {
   return (
     <TextField
       aria-label={field.name}
-      className={styles.inputField}
       error={fieldState.invalid}
       fullWidth={true}
       helperText={fieldState.error ? fieldState.error.message : " "}
