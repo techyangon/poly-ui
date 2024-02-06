@@ -23,8 +23,6 @@ function BranchesTable({ branches, onClick }: BranchesTableProps) {
   const sm = useMediaQuery({ query: "(max-width: 600px)" });
   const md = useMediaQuery({ query: "(max-width: 900px)" });
 
-  console.log(md);
-
   return (
     <TableContainer component={Paper}>
       <Table aria-label="Branches">
