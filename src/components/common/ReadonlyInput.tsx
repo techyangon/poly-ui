@@ -5,6 +5,8 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 
+import styles from "./readonlyinput.module.scss";
+
 import type { InputProps } from "./Input";
 
 function ReadonlyInput<T extends FieldValues>({
@@ -29,6 +31,7 @@ function ReadonlyInput<T extends FieldValues>({
         readOnly: true,
       }}
       aria-label={field.name}
+      className={styles.input}
       fullWidth={true}
       helperText=""
       id={field.name}

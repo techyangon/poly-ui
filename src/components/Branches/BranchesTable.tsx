@@ -17,7 +17,10 @@ import TableRow from "@mui/material/TableRow";
 
 import { useAuth } from "../../contexts/AuthContext";
 import useGetBranches from "../../hooks/useGetBranches";
+import { Actions } from "../../hooks/useGetPermissions";
+import useBoundStore from "../../stores";
 
+import EditBranchForm from "./EditBranchForm";
 import ViewBranchForm from "./ViewBranchForm";
 
 import styles from "./branches.module.scss";
@@ -33,6 +36,8 @@ function BranchesTable() {
 
   const [curBranch, setCurBranch] = useState<Branch>({} as Branch);
   const [openDrawer, setOpenDrawer] = useState(false);
+
+  const permissions = useBoundStore((state) => state.permissions);
 
   const handleChangePage = (
     _: MouseEvent<HTMLButtonElement> | null,
@@ -131,7 +136,11 @@ function BranchesTable() {
               <CloseOutlinedIcon />
             </IconButton>
           </Box>
-          <ViewBranchForm branch={curBranch} />
+          {permissions?.branches.includes(Actions.PUT) ? (
+            <EditBranchForm branch={curBranch} />
+          ) : (
+            <ViewBranchForm branch={curBranch} />
+          )}
         </Box>
       </Drawer>
     </>

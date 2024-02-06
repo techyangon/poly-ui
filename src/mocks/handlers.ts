@@ -148,3 +148,59 @@ export const errorHandlers = [
     return HttpResponse.json({ detail: "Expired token" }, { status: 401 });
   }),
 ];
+
+export const permissionHandlers = [
+  http.get(/branches/, () => {
+    return HttpResponse.json(
+      {
+        branches: [
+          {
+            id: 1,
+            name: "Branch1",
+            address: "Address1",
+            township: "Tsp1",
+            city: "City1",
+            state: "State1",
+            created_by: "user",
+            updated_at: "2024-01-01T00:00:00.000000Z",
+          },
+        ],
+      },
+      { status: 200 }
+    );
+  }),
+  http.get(/locations/, () => {
+    return HttpResponse.json(
+      {
+        states: [
+          {
+            id: 1,
+            name: "State1",
+            cities: [
+              { id: 1, name: "City1", townships: [{ id: 1, name: "Tsp1" }] },
+            ],
+          },
+        ],
+      },
+      { status: 200 }
+    );
+  }),
+  http.get(/permissions/, () => {
+    return HttpResponse.json(
+      {
+        role: "staff",
+        permissions: [
+          {
+            resource: "dashboard",
+            actions: [],
+          },
+          {
+            resource: "branches",
+            actions: ["GET"],
+          },
+        ],
+      },
+      { status: 200 }
+    );
+  }),
+];

@@ -24,7 +24,7 @@ function ViewBranchForm({ branch }: ViewBranchFormProps) {
   });
 
   return (
-    <Grid container spacing={2}>
+    <Grid container={true} spacing={2}>
       <Grid xs={12}>
         <label htmlFor="name">Name</label>
       </Grid>
