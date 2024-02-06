@@ -36,6 +36,7 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     outputFile: "./junit.xml",
+    pool: "forks",
     reporters: ["default", "junit"],
     setupFiles: "./src/setupTests.ts",
   },

@@ -1,31 +1,18 @@
-.heading {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1em;
-}
-
-.no-branches {
-  text-align: center;
-  color: var(--mui-palette-grey-700);
-}
-
-.sticky-column {
-  background: var(--mui-palette-common-white);
-
-  @media screen and (max-width: 620px) {
-    box-shadow: 8px 2px 8px var(--mui-palette-grey-300);
-    left: 0;
-    position: sticky;
-    z-index: 1;
-  }
-}
-
-.drawer {
-  padding: 1em;
-  width: 25em;
-}
-
-.close-drawer {
+.new-button {
   display: flex;
   flex-direction: row-reverse;
+}
+
+.tb-cell {
+  display: table-cell;
+}
+
+.no-tb-cell {
+  display: none;
+}
+
+@media screen and (max-width: 900px) {
+  .new-button :global .MuiButtonBase-root {
+    width: 100%;
+  }
 }
