@@ -59,4 +59,14 @@ describe("View branch form", () => {
       ).not.toBeInTheDocument();
     });
   });
+
+  it("redirects to branches page", async () => {
+    server.use(...permissionHandlers);
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: "Back" }));
+
+    await screen.findByText("Branches");
+  });
 });
