@@ -6,12 +6,10 @@ import { useAuth } from "../contexts/AuthContext";
 export interface Branch {
   address: string;
   city: string;
-  created_by: string;
   id: number;
   name: string;
   state: string;
   township: string;
-  updated_at: string;
 }
 
 interface BranchesResponse {

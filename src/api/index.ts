@@ -47,6 +47,23 @@ const getAllData = async <T>(
   return await handleResponse<T>(response);
 };
 
+const getSingleRecord = async <T>(
+  accessToken: string,
+  resource: string,
+  id: number,
+  username: string
+): Promise<T> => {
+  const response = await fetch(`${API_URL}/${resource}/${id}`, {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${accessToken}`,
+      "X-Username": username,
+    },
+    method: "GET",
+  });
+  return await handleResponse<T>(response);
+};
+
 const updateData = async <T>({
   accessToken,
   resource,
@@ -66,4 +83,4 @@ const updateData = async <T>({
   return await handleResponse<SuccessResponse>(response);
 };
 
-export { getAllData, updateData };
+export { getAllData, getSingleRecord, updateData };
