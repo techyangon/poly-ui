@@ -2,7 +2,7 @@ import { HttpResponse, http } from "msw";
 
 import { AUTH_RESPONSE, PROFILE_RESPONSE } from "../config";
 
-export const handlers = [
+const handlers = [
   http.get(/branches\/1/, () => {
     return HttpResponse.json(
       {
@@ -121,7 +121,7 @@ export const handlers = [
   }),
 ];
 
-export const errorHandlers = [
+const errorHandlers = [
   http.get(/branches/, () => {
     return HttpResponse.json(
       { detail: "There are no existing branches." },
@@ -161,3 +161,8 @@ export const errorHandlers = [
     return HttpResponse.json({ detail: "Expired token" }, { status: 401 });
   }),
 ];
+
+const permissionHandlers = handlers.map((item) => item);
+permissionHandlers[4] = errorHandlers[2];
+
+export { errorHandlers, handlers, permissionHandlers };
