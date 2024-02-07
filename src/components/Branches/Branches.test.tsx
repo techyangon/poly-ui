@@ -1,5 +1,7 @@
 import { RouterProvider, createMemoryRouter } from "react-router-dom";
 
+import { userEvent } from "@testing-library/user-event";
+
 import { errorHandlers } from "../../mocks/handlers";
 import { server } from "../../mocks/server";
 import BaseLayout from "../BaseLayout/BaseLayout";
@@ -17,12 +19,17 @@ const routes = [
         path: "branches",
         element: <Branches />,
       },
+      {
+        path: "branches/:branchID",
+        element: <div>Branch Info</div>,
+      },
     ],
   },
 ];
 
 const router = createMemoryRouter(routes, {
-  initialEntries: ["/home/branches"],
+  initialEntries: ["/home/branches", "/home/branches/1"],
+  initialIndex: 0,
 });
 
 describe("Branches", () => {
@@ -52,6 +59,22 @@ describe("Branches", () => {
 
       expect(screen.getByText("Branch1")).toBeInTheDocument();
       expect(screen.getByText("Branch2")).toBeInTheDocument();
+    });
+  });
+
+  it("directs to single branch page", async () => {
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    const row1Btn = await screen.findByRole("button", {
+      name: "view Branch1 data",
+    });
+
+    await user.click(row1Btn);
+
+    await waitFor(() => {
+      expect(screen.queryByText("Branch Info")).toBeInTheDocument();
     });
   });
 });

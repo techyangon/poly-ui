@@ -1,4 +1,5 @@
 import { MouseEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import Button from "@mui/material/Button";
@@ -21,15 +22,12 @@ function Branches() {
   const [lastPaginatedID, setLastPaginatedID] = useState(0);
   const [page, setPage] = useState(0);
 
-  /* eslint-disable @typescript-eslint/no-unused-vars */
-  const [_, setCurrentID] = useState(0);
-
   const { data } = useGetBranches({ id: lastPaginatedID, per_page: 10 });
 
-  const handleViewRow = (branchID?: number) => {
-    if (branchID) {
-      setCurrentID(branchID);
-    }
+  const navigate = useNavigate();
+
+  const handleViewRow = (branchID: number) => {
+    navigate(`${branchID}`, { replace: false });
   };
 
   const handleChangePage = (
