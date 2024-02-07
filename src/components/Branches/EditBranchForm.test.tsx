@@ -2,8 +2,6 @@ import { RouterProvider, createMemoryRouter } from "react-router-dom";
 
 import { userEvent } from "@testing-library/user-event";
 
-import { permissionHandlers } from "../../mocks/handlers";
-import { server } from "../../mocks/server";
 import BaseLayout from "../BaseLayout/BaseLayout";
 
 import BranchDetails from "./BranchDetails";
@@ -32,9 +30,8 @@ const router = createMemoryRouter(routes, {
   initialIndex: 0,
 });
 
-describe("View branch form", () => {
-  it("shows data without save button", async () => {
-    server.use(...permissionHandlers);
+describe("Edit branch form", () => {
+  it("shows data with save button", async () => {
     render(<RouterProvider router={router} />);
 
     const user = userEvent.setup();
@@ -47,16 +44,16 @@ describe("View branch form", () => {
     await waitFor(() => {
       expect(screen.getByLabelText("Name")).toHaveValue("Branch1");
       expect(screen.getByLabelText("Address")).toHaveValue("Address1");
-      expect(screen.getByLabelText("State")).toHaveValue("State1");
-      expect(screen.getByLabelText("City")).toHaveValue("City1");
-      expect(screen.getByLabelText("Township")).toHaveValue("Tsp1");
+      expect(screen.getByLabelText("State")).toHaveTextContent("State1");
+      expect(screen.getByLabelText("City")).toHaveTextContent("City1");
+      expect(screen.getByLabelText("Township")).toHaveTextContent("Tsp1");
       expect(screen.getByLabelText("Created By")).toHaveValue("user");
       expect(screen.getByLabelText("Updated By")).toHaveValue("user");
       expect(screen.getByLabelText("Created At")).toHaveValue("01/01/2024");
       expect(screen.getByLabelText("Updated At")).toHaveValue("01/01/2024");
       expect(
         screen.queryByRole("button", { name: "Save" })
-      ).not.toBeInTheDocument();
+      ).toBeInTheDocument();
     });
   });
 });

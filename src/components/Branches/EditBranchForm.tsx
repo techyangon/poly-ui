@@ -1,68 +1,90 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useLocation } from "react-router-dom";
 
 import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import Grid from "@mui/material/Unstable_Grid2";
 
+import useGetBranch from "../../hooks/useGetBranch";
 import useBoundStore from "../../stores";
 import ControlSelect from "../common/ControlSelect";
 import Input from "../common/Input";
 import ReadonlyInput from "../common/ReadonlyInput";
 
-import type { Branch } from "../../hooks/useGetBranches";
+import type { Location } from "../../stores/types";
 
-interface EditBranchFormProps {
-  branch: Branch;
-}
-
-function EditBranchForm({ branch }: EditBranchFormProps) {
+function EditBranchForm() {
   const states = useBoundStore((state) => state.states);
   const cities = useBoundStore((state) => state.cities);
   const townships = useBoundStore((state) => state.townships);
 
-  const defaultStateID = Object.keys(states).filter(
-    (key) => states[parseInt(key)] === branch.state
-  )[0];
-  const defaultCityID = Object.keys(cities[parseInt(defaultStateID)]).filter(
-    (cityID) =>
-      cities[parseInt(defaultStateID)][parseInt(cityID)] === branch.city
-  )[0];
-  const defaultTspID = Object.keys(townships[parseInt(defaultCityID)]).filter(
-    (tspID) =>
-      townships[parseInt(defaultCityID)][parseInt(tspID)] === branch.township
-  )[0];
+  const location = useLocation();
+  const { data } = useGetBranch({
+    id: parseInt(location.pathname.split("/").pop()!),
+  });
 
-  const { control, setValue, watch } = useForm({
+  const [stateID, setStateID] = useState(0);
+  const [cityID, setCityID] = useState(0);
+  const [tspID, setTspID] = useState(0);
+
+  const { control, reset, setValue, watch } = useForm({
     defaultValues: {
-      address: branch.address,
-      city: defaultCityID,
-      createdBy: branch.created_by,
-      name: branch.name,
-      state: defaultStateID,
-      township: defaultTspID,
-      updatedAt: new Date(branch.updated_at).toLocaleDateString("en-GB"),
+      address: "",
+      city: "0",
+      createdAt: "",
+      createdBy: "",
+      name: "",
+      state: "0",
+      township: "0",
+      updatedAt: "",
+      updatedBy: "",
     },
   });
 
-  const selectedState = watch("state");
-  const selectedCity = watch("city");
+  const curState = watch("state", "0");
+  const curCity = watch("city", "0");
+
+  const [curCities, setCurCities] = useState({} as Location);
+  const [curTsps, setCurTsps] = useState({} as Location);
 
   useEffect(() => {
-    if (selectedState === defaultStateID) {
-      setValue("city", defaultCityID);
-    } else {
+    if (data) {
+      setStateID(data.state);
+      setCityID(data.city);
+      setTspID(data.township);
+
+      reset({
+        address: data.address,
+        city: data.city.toString(),
+        createdAt: new Date(data.created_at).toLocaleDateString("en-GB"),
+        createdBy: data.created_by,
+        name: data.name,
+        state: data.state.toString(),
+        township: data.township.toString(),
+        updatedAt: new Date(data.updated_at).toLocaleDateString("en-GB"),
+        updatedBy: data.updated_by,
+      });
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (parseInt(curState) !== stateID) {
       setValue("city", "0");
+    } else {
+      setValue("city", cityID.toString());
     }
-  }, [selectedState]);
+    setCurCities(cities[parseInt(curState)]);
+  }, [curState]);
 
   useEffect(() => {
-    if (selectedCity === defaultCityID) {
-      setValue("township", defaultTspID);
-    } else {
+    if (parseInt(curCity) !== cityID) {
       setValue("township", "0");
+    } else {
+      setValue("township", tspID.toString());
     }
-  }, [selectedCity]);
+    setCurTsps(townships[parseInt(curCity)]);
+  }, [curCity]);
 
   return (
     <form id="edit-branch">
@@ -89,27 +111,31 @@ function EditBranchForm({ branch }: EditBranchFormProps) {
           <InputLabel id="city-select-label">City</InputLabel>
         </Grid>
         <Grid xs={12}>
-          <ControlSelect
-            control={control}
-            data={cities[parseInt(selectedState)]}
-            name="city"
-          />
+          <ControlSelect control={control} data={curCities} name="city" />
         </Grid>
         <Grid xs={12}>
           <InputLabel id="township-select-label">Township</InputLabel>
         </Grid>
         <Grid xs={12}>
-          <ControlSelect
-            control={control}
-            data={townships[parseInt(selectedCity)]}
-            name="township"
-          />
+          <ControlSelect control={control} data={curTsps} name="township" />
         </Grid>
         <Grid xs={12}>
           <label htmlFor="createdBy">Created By</label>
         </Grid>
         <Grid xs={12}>
           <ReadonlyInput control={control} name="createdBy" />
+        </Grid>
+        <Grid xs={12}>
+          <label htmlFor="updatedBy">Updated By</label>
+        </Grid>
+        <Grid xs={12}>
+          <ReadonlyInput control={control} name="updatedBy" />
+        </Grid>
+        <Grid xs={12}>
+          <label htmlFor="createdAt">Created At</label>
+        </Grid>
+        <Grid xs={12}>
+          <ReadonlyInput control={control} name="createdAt" />
         </Grid>
         <Grid xs={12}>
           <label htmlFor="updatedAt">Updated At</label>
