@@ -34,62 +34,64 @@ function ViewBranchForm({ branch }: ViewBranchFormProps) {
   });
 
   return (
-    <Grid container={true} spacing={2}>
-      <Grid className={styles.label} xs={12} md={4}>
-        <InputLabel htmlFor="name">Name</InputLabel>
+    <form id={styles.viewBranch}>
+      <Grid container={true} spacing={2}>
+        <Grid className={styles.label} xs={12} md={4}>
+          <InputLabel htmlFor="name">Name</InputLabel>
+        </Grid>
+        <Grid xs={12} md={8}>
+          <ReadonlyInput control={control} name="name" />
+        </Grid>
+        <Grid className={styles.label} xs={12} md={4}>
+          <InputLabel htmlFor="address">Address</InputLabel>
+        </Grid>
+        <Grid xs={12} md={8}>
+          <ReadonlyInput control={control} name="address" />
+        </Grid>
+        <Grid className={styles.label} xs={12} md={4}>
+          <InputLabel htmlFor="state">State</InputLabel>
+        </Grid>
+        <Grid xs={12} md={8}>
+          <ReadonlyInput control={control} name="state" />
+        </Grid>
+        <Grid className={styles.label} xs={12} md={4}>
+          <InputLabel htmlFor="city">City</InputLabel>
+        </Grid>
+        <Grid xs={12} md={8}>
+          <ReadonlyInput control={control} name="city" />
+        </Grid>
+        <Grid className={styles.label} xs={12} md={4}>
+          <InputLabel htmlFor="township">Township</InputLabel>
+        </Grid>
+        <Grid xs={12} md={8}>
+          <ReadonlyInput control={control} name="township" />
+        </Grid>
+        <Grid className={styles.label} xs={12} md={4}>
+          <InputLabel htmlFor="created_by">Created By</InputLabel>
+        </Grid>
+        <Grid xs={12} md={8}>
+          <ReadonlyInput control={control} name="created_by" />
+        </Grid>
+        <Grid className={styles.label} xs={12} md={4}>
+          <InputLabel htmlFor="updated_by">Updated By</InputLabel>
+        </Grid>
+        <Grid xs={12} md={8}>
+          <ReadonlyInput control={control} name="updated_by" />
+        </Grid>
+        <Grid className={styles.label} xs={12} md={4}>
+          <InputLabel htmlFor="created_at">Created At</InputLabel>
+        </Grid>
+        <Grid xs={12} md={8}>
+          <ReadonlyInput control={control} name="created_at" />
+        </Grid>
+        <Grid className={styles.label} xs={12} md={4}>
+          <InputLabel htmlFor="updated_at">Updated At</InputLabel>
+        </Grid>
+        <Grid xs={12} md={8}>
+          <ReadonlyInput control={control} name="updated_at" />
+        </Grid>
       </Grid>
-      <Grid xs={12} md={8}>
-        <ReadonlyInput control={control} name="name" />
-      </Grid>
-      <Grid className={styles.label} xs={12} md={4}>
-        <InputLabel htmlFor="address">Address</InputLabel>
-      </Grid>
-      <Grid xs={12} md={8}>
-        <ReadonlyInput control={control} name="address" />
-      </Grid>
-      <Grid className={styles.label} xs={12} md={4}>
-        <InputLabel htmlFor="state">State</InputLabel>
-      </Grid>
-      <Grid xs={12} md={8}>
-        <ReadonlyInput control={control} name="state" />
-      </Grid>
-      <Grid className={styles.label} xs={12} md={4}>
-        <InputLabel htmlFor="city">City</InputLabel>
-      </Grid>
-      <Grid xs={12} md={8}>
-        <ReadonlyInput control={control} name="city" />
-      </Grid>
-      <Grid className={styles.label} xs={12} md={4}>
-        <InputLabel htmlFor="township">Township</InputLabel>
-      </Grid>
-      <Grid xs={12} md={8}>
-        <ReadonlyInput control={control} name="township" />
-      </Grid>
-      <Grid className={styles.label} xs={12} md={4}>
-        <InputLabel htmlFor="created_by">Created By</InputLabel>
-      </Grid>
-      <Grid xs={12} md={8}>
-        <ReadonlyInput control={control} name="created_by" />
-      </Grid>
-      <Grid className={styles.label} xs={12} md={4}>
-        <InputLabel htmlFor="updated_by">Updated By</InputLabel>
-      </Grid>
-      <Grid xs={12} md={8}>
-        <ReadonlyInput control={control} name="updated_by" />
-      </Grid>
-      <Grid className={styles.label} xs={12} md={4}>
-        <InputLabel htmlFor="created_at">Created At</InputLabel>
-      </Grid>
-      <Grid xs={12} md={8}>
-        <ReadonlyInput control={control} name="created_at" />
-      </Grid>
-      <Grid className={styles.label} xs={12} md={4}>
-        <InputLabel htmlFor="updated_at">Updated At</InputLabel>
-      </Grid>
-      <Grid xs={12} md={8}>
-        <ReadonlyInput control={control} name="updated_at" />
-      </Grid>
-    </Grid>
+    </form>
   );
 }
 

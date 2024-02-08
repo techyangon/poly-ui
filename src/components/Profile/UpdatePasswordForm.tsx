@@ -11,6 +11,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
+import InputLabel from "@mui/material/InputLabel";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Unstable_Grid2";
 
@@ -133,25 +134,25 @@ function UpdatePasswordForm() {
           )}
           <Grid className={styles.userInfo} container spacing={2}>
             <Grid xs={12} md={4}>
-              <label className={styles.label} htmlFor="current_password">
+              <InputLabel className={styles.label} htmlFor="current_password">
                 Current Password
-              </label>
+              </InputLabel>
             </Grid>
             <Grid xs={12} md={8}>
               <PasswordInput control={control} name="current_password" />
             </Grid>
             <Grid xs={12} md={4}>
-              <label className={styles.label} htmlFor="new_password">
+              <InputLabel className={styles.label} htmlFor="new_password">
                 New Password
-              </label>
+              </InputLabel>
             </Grid>
             <Grid xs={12} md={8}>
               <PasswordInput control={control} name="new_password" />
             </Grid>
             <Grid xs={12} md={4}>
-              <label className={styles.label} htmlFor="confirm_password">
+              <InputLabel className={styles.label} htmlFor="confirm_password">
                 Confirm Password
-              </label>
+              </InputLabel>
             </Grid>
             <Grid xs={12} md={8}>
               <PasswordInput control={control} name="confirm_password" />

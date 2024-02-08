@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
+import InputLabel from "@mui/material/InputLabel";
 import Grid from "@mui/material/Unstable_Grid2";
 
 import { useAuth } from "../../contexts/AuthContext";
@@ -58,33 +59,33 @@ function UserInfo() {
   return (
     <Grid className={styles.userInfo} container spacing={2}>
       <Grid xs={12} md={4}>
-        <label className={styles.label} htmlFor="username">
+        <InputLabel className={styles.label} htmlFor="username">
           Username
-        </label>
+        </InputLabel>
       </Grid>
       <Grid xs={12} md={8}>
         <ReadonlyInput control={control} name="username" />
       </Grid>
       <Grid xs={12} md={4}>
-        <label className={styles.label} htmlFor="email">
+        <InputLabel className={styles.label} htmlFor="email">
           Email
-        </label>
+        </InputLabel>
       </Grid>
       <Grid xs={12} md={8}>
         <ReadonlyInput control={control} name="email" />
       </Grid>
       <Grid xs={12} md={4}>
-        <label className={styles.label} htmlFor="role">
+        <InputLabel className={styles.label} htmlFor="role">
           Role
-        </label>
+        </InputLabel>
       </Grid>
       <Grid xs={12} md={8}>
         <ReadonlyInput control={control} name="role" />
       </Grid>
       <Grid xs={12} md={4}>
-        <label className={styles.label} htmlFor="created_at">
+        <InputLabel className={styles.label} htmlFor="created_at">
           Joined At
-        </label>
+        </InputLabel>
       </Grid>
       <Grid xs={12} md={8}>
         <ReadonlyInput control={control} name="created_at" />

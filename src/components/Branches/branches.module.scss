@@ -29,6 +29,13 @@
   }
 }
 
+#edit-branch,
+#view-branch {
+  & :global .MuiGrid2-container {
+    padding: 0.5em;
+  }
+}
+
 @media screen and (max-width: 600px) {
   .new-button :global .MuiButtonBase-root {
     width: 100%;

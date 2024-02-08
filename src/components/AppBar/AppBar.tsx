@@ -3,9 +3,12 @@ import { MouseEvent, useState } from "react";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import Brightness4OutlinedIcon from "@mui/icons-material/Brightness4Outlined";
 import Brightness7OutlinedIcon from "@mui/icons-material/Brightness7Outlined";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import MuiAppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
@@ -17,17 +20,18 @@ import { useColorScheme } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 
-import Logo from "../../../poly-white.svg";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link } from "../Navigation/NavLink";
 
 import styles from "./appbar.module.scss";
 
 interface AppBarProps {
+  onClick: () => void;
   onLogout: () => void;
+  open: boolean;
 }
 
-function AppBar({ onLogout }: AppBarProps) {
+function AppBar({ onClick, onLogout, open }: AppBarProps) {
   const { username } = useAuth();
   const { mode, setMode } = useColorScheme();
 
@@ -49,13 +53,18 @@ function AppBar({ onLogout }: AppBarProps) {
 
   return (
     <MuiAppBar>
-      <Container
-        className={styles.toolbar}
-        disableGutters={true}
-        maxWidth={false}
-      >
+      <Container className={styles.toolbarContainer} maxWidth={false}>
         <Toolbar>
-          <img className={styles.logo} src={Logo} />
+          <Box className={styles.logoContainer}>
+            <IconButton
+              aria-label="open navigation"
+              color="inherit"
+              onClick={onClick}
+              edge="start"
+            >
+              {open ? <CloseOutlinedIcon /> : <MenuOutlinedIcon />}
+            </IconButton>
+          </Box>
           <Typography className={styles.logoText} component="div" variant="h5">
             Poly
           </Typography>

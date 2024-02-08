@@ -124,4 +124,13 @@ describe("Edit branch form", () => {
       expect(tspInput).toHaveTextContent("Tsp1");
     });
   });
+
+  it("redirects to branches page", async () => {
+    render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: "Back" }));
+
+    await screen.findByRole("button", { name: "New Branch" });
+  });
 });

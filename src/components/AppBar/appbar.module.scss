@@ -1,11 +1,7 @@
-.toolbar {
-  & :global .MuiToolbar-root {
-    padding-left: 10px;
+.logo-container {
+  & :global .MuiButtonBase-root {
+    padding-left: 12px;
   }
-}
-
-.logo {
-  margin-right: 8px;
 }
 
 .logo-text {

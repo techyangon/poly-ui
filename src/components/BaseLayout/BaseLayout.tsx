@@ -28,6 +28,8 @@ function BaseLayout() {
     refetch,
   } = useGetAccessToken();
 
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   const [openLogoutAlert, setOpenLogoutAlert] = useState(false);
   const navigate = useNavigate();
 
@@ -103,11 +105,19 @@ function BaseLayout() {
     setOpenLogoutAlert(false);
   };
 
+  const handleDrawer = () => {
+    setIsDrawerOpen((prev) => !prev);
+  };
+
   return (
     <Box className={styles.rootContainer}>
       <CssBaseline />
-      <AppBar onLogout={handleLogout} />
-      <Navigation />
+      <AppBar
+        open={isDrawerOpen}
+        onLogout={handleLogout}
+        onClick={handleDrawer}
+      />
+      <Navigation open={isDrawerOpen} />
       <Box className={styles.content} component="main">
         <DrawerHeader />
         <Outlet />

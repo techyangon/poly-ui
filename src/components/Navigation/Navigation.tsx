@@ -18,13 +18,20 @@ export const DrawerHeader = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
-function Navigation() {
+interface NavigationProps {
+  open: boolean;
+}
+
+function Navigation({ open }: NavigationProps) {
   const location = useLocation();
 
   const permissions = useBoundStore((state) => state.permissions);
 
   return (
-    <Drawer className={styles.drawer} variant="permanent">
+    <Drawer
+      className={open ? styles.drawerOpen : styles.drawerClosed}
+      variant="permanent"
+    >
       <DrawerHeader />
       <Divider />
       <List>

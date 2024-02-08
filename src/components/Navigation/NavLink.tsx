@@ -7,9 +7,7 @@ import {
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import Tooltip from "@mui/material/Tooltip";
-
-import styles from "./navlink.module.scss";
+import ListItemText from "@mui/material/ListItemText";
 
 interface NavLinkProps {
   icon: ReactElement;
@@ -26,20 +24,12 @@ export const Link = forwardRef<HTMLAnchorElement, RouterLinkProps>(
 
 function NavLink({ icon, selected, title, to }: NavLinkProps) {
   return (
-    <li>
-      <ListItem
-        className={styles.listItem}
-        component={Link}
-        disablePadding={true}
-        to={to}
-      >
-        <Tooltip placement="right" title={title}>
-          <ListItemButton className={styles.itemButton} selected={selected}>
-            <ListItemIcon>{icon}</ListItemIcon>
-          </ListItemButton>
-        </Tooltip>
-      </ListItem>
-    </li>
+    <ListItem component={Link} to={to}>
+      <ListItemButton selected={selected}>
+        <ListItemIcon>{icon}</ListItemIcon>
+        <ListItemText>{title}</ListItemText>
+      </ListItemButton>
+    </ListItem>
   );
 }
 
