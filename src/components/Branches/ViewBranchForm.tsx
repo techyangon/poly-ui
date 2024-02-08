@@ -1,55 +1,37 @@
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useLocation } from "react-router-dom";
 
 import InputLabel from "@mui/material/InputLabel";
 import Grid from "@mui/material/Unstable_Grid2";
 
-import useGetBranch from "../../hooks/useGetBranch";
 import useBoundStore from "../../stores";
 import ReadonlyInput from "../common/ReadonlyInput";
 
 import styles from "./branches.module.scss";
 
-function ViewBranchForm() {
-  const location = useLocation();
-  const { data } = useGetBranch({
-    id: parseInt(location.pathname.split("/").pop()!),
-  });
+import type { BranchDetails } from "../../hooks/useGetBranch";
 
+interface ViewBranchFormProps {
+  branch: BranchDetails;
+}
+
+function ViewBranchForm({ branch }: ViewBranchFormProps) {
   const states = useBoundStore((state) => state.states);
   const cities = useBoundStore((state) => state.cities);
   const townships = useBoundStore((state) => state.townships);
 
-  const { control, reset } = useForm({
+  const { control } = useForm({
     defaultValues: {
-      address: "",
-      city: "",
-      createdAt: "",
-      createdBy: "",
-      name: "",
-      state: "",
-      township: "",
-      updatedAt: "",
-      updatedBy: "",
+      address: branch.address,
+      city: cities[branch.state][branch.city],
+      created_at: new Date(branch.created_at).toLocaleDateString("en-GB"),
+      created_by: branch.created_by,
+      name: branch.name,
+      state: states[branch.state],
+      township: townships[branch.city][branch.township],
+      updated_at: new Date(branch.updated_at).toLocaleDateString("en-GB"),
+      updated_by: branch.updated_by,
     },
   });
-
-  useEffect(() => {
-    if (data) {
-      reset({
-        address: data.address,
-        city: cities[data.state][data.city],
-        createdAt: new Date(data.created_at).toLocaleDateString("en-GB"),
-        createdBy: data.created_by,
-        name: data.name,
-        state: states[data.state],
-        township: townships[data.city][data.township],
-        updatedAt: new Date(data.updated_at).toLocaleDateString("en-GB"),
-        updatedBy: data.updated_by,
-      });
-    }
-  }, [data]);
 
   return (
     <Grid container={true} spacing={2}>
@@ -84,28 +66,28 @@ function ViewBranchForm() {
         <ReadonlyInput control={control} name="township" />
       </Grid>
       <Grid className={styles.label} xs={12} md={4}>
-        <InputLabel htmlFor="createdBy">Created By</InputLabel>
+        <InputLabel htmlFor="created_by">Created By</InputLabel>
       </Grid>
       <Grid xs={12} md={8}>
-        <ReadonlyInput control={control} name="createdBy" />
+        <ReadonlyInput control={control} name="created_by" />
       </Grid>
       <Grid className={styles.label} xs={12} md={4}>
-        <InputLabel htmlFor="updatedBy">Updated By</InputLabel>
+        <InputLabel htmlFor="updated_by">Updated By</InputLabel>
       </Grid>
       <Grid xs={12} md={8}>
-        <ReadonlyInput control={control} name="updatedBy" />
+        <ReadonlyInput control={control} name="updated_by" />
       </Grid>
       <Grid className={styles.label} xs={12} md={4}>
-        <InputLabel htmlFor="createdAt">Created At</InputLabel>
+        <InputLabel htmlFor="created_at">Created At</InputLabel>
       </Grid>
       <Grid xs={12} md={8}>
-        <ReadonlyInput control={control} name="createdAt" />
+        <ReadonlyInput control={control} name="created_at" />
       </Grid>
       <Grid className={styles.label} xs={12} md={4}>
-        <InputLabel htmlFor="updatedAt">Updated At</InputLabel>
+        <InputLabel htmlFor="updated_at">Updated At</InputLabel>
       </Grid>
       <Grid xs={12} md={8}>
-        <ReadonlyInput control={control} name="updatedAt" />
+        <ReadonlyInput control={control} name="updated_at" />
       </Grid>
     </Grid>
   );

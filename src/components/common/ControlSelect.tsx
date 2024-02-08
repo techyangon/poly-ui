@@ -19,6 +19,18 @@ interface ControlSelectProps<T extends FieldValues>
   data: Location;
 }
 
+const generateItems = (data: Record<number, string>) => {
+  const items = [];
+  for (const key in data) {
+    items.push(
+      <MenuItem key={key} value={key}>
+        {data[key]}
+      </MenuItem>
+    );
+  }
+  return items;
+};
+
 function ControlSelect<T extends FieldValues>({
   control,
   data,
@@ -29,29 +41,18 @@ function ControlSelect<T extends FieldValues>({
     name: name,
   });
 
-  const generateItems = () => {
-    const items = [];
-    for (const key in data) {
-      items.push(
-        <MenuItem key={key} value={key}>
-          {data[key]}
-        </MenuItem>
-      );
-    }
-    return items;
-  };
-
   return (
     <FormControl className={styles.input} fullWidth={true} size="small">
       <Select
         labelId={`${name}-select-label`}
         id={`${name}-select`}
+        inputRef={field.ref}
         onChange={field.onChange}
         value={field.value}
         variant="filled"
       >
         <MenuItem key={0} value={0}>{`Choose a ${name}`}</MenuItem>
-        {generateItems()}
+        {generateItems(data)}
       </Select>
     </FormControl>
   );

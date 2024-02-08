@@ -1,90 +1,68 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useLocation } from "react-router-dom";
 
 import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import Grid from "@mui/material/Unstable_Grid2";
 
-import useGetBranch from "../../hooks/useGetBranch";
 import useBoundStore from "../../stores";
 import ControlSelect from "../common/ControlSelect";
 import Input from "../common/Input";
 import ReadonlyInput from "../common/ReadonlyInput";
 
-import type { Location } from "../../stores/types";
+//import type { Location } from "../../stores/types";
+import type { BranchDetails } from "../../hooks/useGetBranch";
 
-function EditBranchForm() {
+interface EditBranchFormProps {
+  branch: BranchDetails;
+}
+
+function EditBranchForm({ branch }: EditBranchFormProps) {
   const states = useBoundStore((state) => state.states);
   const cities = useBoundStore((state) => state.cities);
   const townships = useBoundStore((state) => state.townships);
 
-  const location = useLocation();
-  const { data } = useGetBranch({
-    id: parseInt(location.pathname.split("/").pop()!),
-  });
-
-  const [stateID, setStateID] = useState(0);
-  const [cityID, setCityID] = useState(0);
-  const [tspID, setTspID] = useState(0);
-
-  const { control, reset, setValue, watch } = useForm({
+  const { control, formState, reset, setValue, watch } = useForm({
     defaultValues: {
-      address: "",
-      city: "0",
-      createdAt: "",
-      createdBy: "",
-      name: "",
-      state: "0",
-      township: "0",
-      updatedAt: "",
-      updatedBy: "",
+      address: branch.address,
+      city: branch.city,
+      created_at: new Date(branch.created_at).toLocaleDateString("en-GB"),
+      created_by: branch.created_by,
+      name: branch.name,
+      state: branch.state,
+      township: branch.township,
+      updated_at: new Date(branch.updated_at).toLocaleDateString("en-GB"),
+      updated_by: branch.updated_by,
     },
   });
 
-  const curState = watch("state", "0");
-  const curCity = watch("city", "0");
+  const curState = watch("state");
+  const curCity = watch("city");
 
-  const [curCities, setCurCities] = useState({} as Location);
-  const [curTsps, setCurTsps] = useState({} as Location);
-
-  useEffect(() => {
-    if (data) {
-      setStateID(data.state);
-      setCityID(data.city);
-      setTspID(data.township);
-
-      reset({
-        address: data.address,
-        city: data.city.toString(),
-        createdAt: new Date(data.created_at).toLocaleDateString("en-GB"),
-        createdBy: data.created_by,
-        name: data.name,
-        state: data.state.toString(),
-        township: data.township.toString(),
-        updatedAt: new Date(data.updated_at).toLocaleDateString("en-GB"),
-        updatedBy: data.updated_by,
-      });
-    }
-  }, [data]);
+  const [stateID, setStateID] = useState(branch.state);
+  const [cityID, setCityID] = useState(branch.city);
 
   useEffect(() => {
-    if (parseInt(curState) !== stateID) {
-      setValue("city", "0");
-    } else {
-      setValue("city", cityID.toString());
+    if (formState.dirtyFields.state) {
+      setValue("city", 0);
+      setValue("township", 0);
+
+      setStateID(curState);
+      setCityID(0);
     }
-    setCurCities(cities[parseInt(curState)]);
   }, [curState]);
 
   useEffect(() => {
-    if (parseInt(curCity) !== cityID) {
-      setValue("township", "0");
-    } else {
-      setValue("township", tspID.toString());
+    if (formState.dirtyFields.city) {
+      setValue("township", 0);
+
+      setCityID(curCity);
     }
-    setCurTsps(townships[parseInt(curCity)]);
   }, [curCity]);
+
+  const handleReset = () => {
+    reset();
+  };
 
   return (
     <form id="edit-branch">
@@ -111,41 +89,55 @@ function EditBranchForm() {
           <InputLabel id="city-select-label">City</InputLabel>
         </Grid>
         <Grid xs={12}>
-          <ControlSelect control={control} data={curCities} name="city" />
+          <ControlSelect control={control} data={cities[stateID]} name="city" />
         </Grid>
         <Grid xs={12}>
           <InputLabel id="township-select-label">Township</InputLabel>
         </Grid>
         <Grid xs={12}>
-          <ControlSelect control={control} data={curTsps} name="township" />
+          <ControlSelect
+            control={control}
+            data={townships[cityID]}
+            name="township"
+          />
         </Grid>
         <Grid xs={12}>
-          <label htmlFor="createdBy">Created By</label>
+          <label htmlFor="created_by">Created By</label>
         </Grid>
         <Grid xs={12}>
-          <ReadonlyInput control={control} name="createdBy" />
+          <ReadonlyInput control={control} name="created_by" />
         </Grid>
         <Grid xs={12}>
-          <label htmlFor="updatedBy">Updated By</label>
+          <label htmlFor="updated_by">Updated By</label>
         </Grid>
         <Grid xs={12}>
-          <ReadonlyInput control={control} name="updatedBy" />
+          <ReadonlyInput control={control} name="updated_by" />
         </Grid>
         <Grid xs={12}>
-          <label htmlFor="createdAt">Created At</label>
+          <label htmlFor="created_at">Created At</label>
         </Grid>
         <Grid xs={12}>
-          <ReadonlyInput control={control} name="createdAt" />
+          <ReadonlyInput control={control} name="created_at" />
         </Grid>
         <Grid xs={12}>
-          <label htmlFor="updatedAt">Updated At</label>
+          <label htmlFor="updated_at">Updated At</label>
         </Grid>
         <Grid xs={12}>
-          <ReadonlyInput control={control} name="updatedAt" />
+          <ReadonlyInput control={control} name="updated_at" />
         </Grid>
-        <Grid xs={12}>
+        <Grid xs={6}>
           <Button fullWidth={true} type="submit" variant="contained">
             Save
+          </Button>
+        </Grid>
+        <Grid xs={6}>
+          <Button
+            fullWidth={true}
+            onClick={handleReset}
+            type="button"
+            variant="outlined"
+          >
+            Reset
           </Button>
         </Grid>
       </Grid>

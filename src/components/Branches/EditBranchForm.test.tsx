@@ -1,5 +1,6 @@
 import { RouterProvider, createMemoryRouter } from "react-router-dom";
 
+import { within } from "@testing-library/dom";
 import { userEvent } from "@testing-library/user-event";
 
 import BaseLayout from "../BaseLayout/BaseLayout";
@@ -54,6 +55,45 @@ describe("Edit branch form", () => {
       expect(
         screen.queryByRole("button", { name: "Save" })
       ).toBeInTheDocument();
+    });
+  });
+
+  it("changes options based on other fields", async () => {
+    const { baseElement } = render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    const stateInput = await screen.findByLabelText("State");
+    const cityInput = await screen.findByLabelText("City");
+    const tspInput = await screen.findByLabelText("Township");
+
+    await user.click(stateInput);
+    await waitFor(() => {
+      expect(
+        within(baseElement).getByRole("option", { name: "State2" })
+      ).toBeInTheDocument();
+    });
+    await user.click(
+      within(baseElement).getByRole("option", { name: "State2" })
+    );
+    await waitFor(() => {
+      expect(cityInput).toHaveTextContent("Choose a city");
+    });
+    await waitFor(() => {
+      expect(tspInput).toHaveTextContent("Choose a township");
+    });
+
+    await user.click(cityInput);
+    await waitFor(() => {
+      expect(
+        within(baseElement).getByRole("option", { name: "City2" })
+      ).toBeInTheDocument();
+    });
+    await user.click(
+      within(baseElement).getByRole("option", { name: "City2" })
+    );
+    await waitFor(() => {
+      expect(tspInput).toHaveTextContent("Choose a township");
     });
   });
 });

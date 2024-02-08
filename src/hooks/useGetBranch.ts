@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getSingleRecord } from "../api";
 import { useAuth } from "../contexts/AuthContext";
 
-interface BranchAbbr {
+export interface BranchDetails {
   address: string;
   city: number;
   created_at: string;
@@ -23,7 +23,7 @@ interface SingleRecordProp {
 function useGetBranch({ id }: SingleRecordProp) {
   const { accessToken, username } = useAuth();
 
-  return useQuery<BranchAbbr, Error>({
+  return useQuery<BranchDetails, Error>({
     queryKey: ["branch", accessToken, id, username],
     queryFn: async () =>
       await getSingleRecord(accessToken, "branches", id, username),
