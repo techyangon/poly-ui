@@ -10,7 +10,8 @@ import ControlSelect from "../common/ControlSelect";
 import Input from "../common/Input";
 import ReadonlyInput from "../common/ReadonlyInput";
 
-//import type { Location } from "../../stores/types";
+import styles from "./branches.module.scss";
+
 import type { BranchDetails } from "../../hooks/useGetBranch";
 
 interface EditBranchFormProps {
@@ -68,64 +69,64 @@ function EditBranchForm({ branch }: EditBranchFormProps) {
   };
 
   return (
-    <form id="edit-branch">
+    <form id={styles.editBranch}>
       <Grid container={true} spacing={2}>
-        <Grid xs={12}>
+        <Grid xs={12} sm={12} md={4}>
           <label htmlFor="name">Name</label>
         </Grid>
-        <Grid xs={12}>
+        <Grid xs={12} sm={12} md={8}>
           <Input control={control} name="name" />
         </Grid>
-        <Grid xs={12}>
+        <Grid xs={12} sm={12} md={4}>
           <label htmlFor="address">Address</label>
         </Grid>
-        <Grid xs={12}>
+        <Grid xs={12} sm={12} md={8}>
           <Input control={control} name="address" />
         </Grid>
-        <Grid xs={12}>
+        <Grid xs={12} sm={12} md={4}>
           <InputLabel id="state-select-label">State</InputLabel>
         </Grid>
-        <Grid xs={12}>
+        <Grid xs={12} sm={12} md={8}>
           <ControlSelect control={control} data={states} name="state" />
         </Grid>
-        <Grid xs={12}>
+        <Grid xs={12} sm={12} md={4}>
           <InputLabel id="city-select-label">City</InputLabel>
         </Grid>
-        <Grid xs={12}>
+        <Grid xs={12} sm={12} md={8}>
           <ControlSelect control={control} data={cities[stateID]} name="city" />
         </Grid>
-        <Grid xs={12}>
+        <Grid xs={12} sm={12} md={4}>
           <InputLabel id="township-select-label">Township</InputLabel>
         </Grid>
-        <Grid xs={12}>
+        <Grid xs={12} sm={12} md={8}>
           <ControlSelect
             control={control}
             data={townships[cityID]}
             name="township"
           />
         </Grid>
-        <Grid xs={12}>
+        <Grid xs={12} sm={12} md={4}>
           <label htmlFor="created_by">Created By</label>
         </Grid>
-        <Grid xs={12}>
+        <Grid xs={12} sm={12} md={8}>
           <ReadonlyInput control={control} name="created_by" />
         </Grid>
-        <Grid xs={12}>
+        <Grid xs={12} sm={12} md={4}>
           <label htmlFor="updated_by">Updated By</label>
         </Grid>
-        <Grid xs={12}>
+        <Grid xs={12} sm={12} md={8}>
           <ReadonlyInput control={control} name="updated_by" />
         </Grid>
-        <Grid xs={12}>
+        <Grid xs={12} sm={12} md={4}>
           <label htmlFor="created_at">Created At</label>
         </Grid>
-        <Grid xs={12}>
+        <Grid xs={12} sm={12} md={8}>
           <ReadonlyInput control={control} name="created_at" />
         </Grid>
-        <Grid xs={12}>
+        <Grid xs={12} sm={12} md={4}>
           <label htmlFor="updated_at">Updated At</label>
         </Grid>
-        <Grid xs={12}>
+        <Grid xs={12} sm={12} md={8}>
           <ReadonlyInput control={control} name="updated_at" />
         </Grid>
         <Grid xs={6}>
