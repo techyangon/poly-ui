@@ -14,6 +14,7 @@ import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import IconButton from "@mui/material/IconButton";
 import { useColorScheme } from "@mui/material/styles";
+import Grid from "@mui/material/Unstable_Grid2";
 
 import { AUTH_CHECK } from "../../config";
 import { useAuth } from "../../contexts/AuthContext";
@@ -105,24 +106,38 @@ function Login() {
             )}
           </IconButton>
         </Box>
-        <form
-          className={styles.formContainer}
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <label htmlFor="email">Email</label>
-          <Input control={control} name="email" />
-          <label htmlFor="password">Password</label>
-          <PasswordInput control={control} name="password" />
-          <Button
-            className={styles.formField}
-            type="submit"
-            variant="contained"
-          >
-            Login
-          </Button>
-          {errors.root && (
-            <Alert severity="error">{errors.root.serverError.message}</Alert>
-          )}
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid container={true} spacing={2}>
+            <Grid xs={12}>
+              <label htmlFor="email">Email</label>
+            </Grid>
+            <Grid xs={12}>
+              <Input control={control} name="email" />
+            </Grid>
+            <Grid xs={12}>
+              <label htmlFor="password">Password</label>
+            </Grid>
+            <Grid xs={12}>
+              <PasswordInput control={control} name="password" />
+            </Grid>
+            <Grid xs={12}>
+              <Button
+                className={styles.formField}
+                fullWidth={true}
+                type="submit"
+                variant="contained"
+              >
+                Login
+              </Button>
+            </Grid>
+            <Grid xs={12}>
+              {errors.root && (
+                <Alert severity="error">
+                  {errors.root.serverError.message}
+                </Alert>
+              )}
+            </Grid>
+          </Grid>
         </form>
       </Box>
     </Container>

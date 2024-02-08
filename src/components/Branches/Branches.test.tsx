@@ -1,5 +1,7 @@
 import { RouterProvider, createMemoryRouter } from "react-router-dom";
 
+import { userEvent } from "@testing-library/user-event";
+
 import { errorHandlers } from "../../mocks/handlers";
 import { server } from "../../mocks/server";
 import BaseLayout from "../BaseLayout/BaseLayout";
@@ -8,48 +10,37 @@ import Branches from "./Branches";
 
 import { render, screen, waitFor } from "test-utils";
 
+const routes = [
+  {
+    path: "/home",
+    element: <BaseLayout />,
+    children: [
+      {
+        path: "branches",
+        element: <Branches />,
+      },
+      {
+        path: "branches/:branchID",
+        element: <div>Branch Info</div>,
+      },
+    ],
+  },
+];
+
+const router = createMemoryRouter(routes, {
+  initialEntries: ["/home/branches", "/home/branches/1"],
+  initialIndex: 0,
+});
+
 describe("Branches", () => {
   it("shows button to creat new branch with permissions", async () => {
-    const routes = [
-      {
-        path: "/home",
-        element: <BaseLayout />,
-        children: [
-          {
-            path: "branches",
-            element: <Branches />,
-          },
-        ],
-      },
-    ];
-    const router = createMemoryRouter(routes, {
-      initialEntries: ["/home/branches"],
-    });
-
     render(<RouterProvider router={router} />);
 
     await screen.findByRole("button", { name: "New Branch" });
   });
 
-  it("shows no button to creat new branch without permissions", async () => {
+  it("doesn't show button to creat new branch without permissions", async () => {
     server.use(...errorHandlers);
-
-    const routes = [
-      {
-        path: "/home",
-        element: <BaseLayout />,
-        children: [
-          {
-            path: "branches",
-            element: <Branches />,
-          },
-        ],
-      },
-    ];
-    const router = createMemoryRouter(routes, {
-      initialEntries: ["/home/branches"],
-    });
-
     render(<RouterProvider router={router} />);
 
     await waitFor(() => {
@@ -60,22 +51,6 @@ describe("Branches", () => {
   });
 
   it("renders table data correctly", async () => {
-    const routes = [
-      {
-        path: "/home",
-        element: <BaseLayout />,
-        children: [
-          {
-            path: "branches",
-            element: <Branches />,
-          },
-        ],
-      },
-    ];
-    const router = createMemoryRouter(routes, {
-      initialEntries: ["/home/branches"],
-    });
-
     render(<RouterProvider router={router} />);
 
     /* 1 Header row + 2 Data row */
@@ -87,26 +62,19 @@ describe("Branches", () => {
     });
   });
 
-  it("informs the user when there is no data", async () => {
-    server.use(...errorHandlers);
-    const routes = [
-      {
-        path: "/home",
-        element: <BaseLayout />,
-        children: [
-          {
-            path: "branches",
-            element: <Branches />,
-          },
-        ],
-      },
-    ];
-    const router = createMemoryRouter(routes, {
-      initialEntries: ["/home/branches"],
-    });
-
+  it("directs to single branch page", async () => {
     render(<RouterProvider router={router} />);
 
-    await screen.findByText("There are no existing branches.");
+    const user = userEvent.setup();
+
+    const row1Btn = await screen.findByRole("button", {
+      name: "view Branch1 data",
+    });
+
+    await user.click(row1Btn);
+
+    await waitFor(() => {
+      expect(screen.queryByText("Branch Info")).toBeInTheDocument();
+    });
   });
 });

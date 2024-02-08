@@ -7,8 +7,6 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 
-import styles from "./input.module.scss";
-
 import type { InputProps } from "./Input";
 
 function PasswordInput<T extends FieldValues>({
@@ -49,7 +47,6 @@ function PasswordInput<T extends FieldValues>({
         ),
       }}
       aria-label={field.name}
-      className={styles.inputField}
       error={fieldState.invalid}
       fullWidth={true}
       helperText={fieldState.error ? fieldState.error.message : " "}

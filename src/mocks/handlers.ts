@@ -2,7 +2,24 @@ import { HttpResponse, http } from "msw";
 
 import { AUTH_RESPONSE, PROFILE_RESPONSE } from "../config";
 
-export const handlers = [
+const handlers = [
+  http.get(/branches\/1/, () => {
+    return HttpResponse.json(
+      {
+        id: 1,
+        name: "Branch1",
+        address: "Address1",
+        township: 1,
+        city: 1,
+        state: 1,
+        created_at: "2024-01-01T00:00:00.000000Z",
+        created_by: "user",
+        updated_at: "2024-01-01T00:00:00.000000Z",
+        updated_by: "user",
+      },
+      { status: 200 }
+    );
+  }),
   http.get(/branches/, () => {
     return HttpResponse.json(
       {
@@ -14,8 +31,6 @@ export const handlers = [
             township: "Tsp1",
             city: "City1",
             state: "State1",
-            created_by: "user",
-            updated_at: "2024-01-01T00:00:00.000000Z",
           },
           {
             id: 2,
@@ -24,8 +39,6 @@ export const handlers = [
             township: "Tsp2",
             city: "City2",
             state: "State2",
-            created_by: "user",
-            updated_at: "2024-01-01T00:00:00.000000Z",
           },
         ],
       },
@@ -108,7 +121,7 @@ export const handlers = [
   }),
 ];
 
-export const errorHandlers = [
+const errorHandlers = [
   http.get(/branches/, () => {
     return HttpResponse.json(
       { detail: "There are no existing branches." },
@@ -148,3 +161,8 @@ export const errorHandlers = [
     return HttpResponse.json({ detail: "Expired token" }, { status: 401 });
   }),
 ];
+
+const permissionHandlers = handlers.map((item) => item);
+permissionHandlers[4] = errorHandlers[2];
+
+export { errorHandlers, handlers, permissionHandlers };

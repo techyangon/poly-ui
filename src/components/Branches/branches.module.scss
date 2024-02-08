@@ -1,10 +1,45 @@
-.heading {
+.new-button {
   display: flex;
-  justify-content: space-between;
+  flex-direction: row-reverse;
+}
+
+.tb-cell {
+  display: table-cell;
+}
+
+.no-tb-cell {
+  display: none;
+}
+
+.detail-container > div:first-child {
   margin-bottom: 1em;
 }
 
-.no-branches {
-  text-align: center;
-  color: var(--mui-palette-grey-700);
+.label {
+  & :global .MuiInputLabel-root {
+    line-height: 2.5;
+  }
+}
+
+.save-button {
+  display: flex;
+  flex-direction: row-reverse;
+  & :global .MuiButtonBase-root {
+    width: 66%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .new-button :global .MuiButtonBase-root {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .detail-container > div:first-child {
+    margin-bottom: 0;
+  }
+  .save-button :global .MuiButtonBase-root {
+    width: 100%;
+  }
 }
