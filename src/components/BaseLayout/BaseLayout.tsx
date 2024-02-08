@@ -117,7 +117,7 @@ function BaseLayout() {
         onLogout={handleLogout}
         onClick={handleDrawer}
       />
-      <Navigation onClick={handleDrawer} open={isDrawerOpen} />
+      <Navigation open={isDrawerOpen} />
       <Box className={styles.content} component="main">
         <DrawerHeader />
         <Outlet />
