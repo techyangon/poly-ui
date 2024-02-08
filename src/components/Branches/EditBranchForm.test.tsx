@@ -96,4 +96,32 @@ describe("Edit branch form", () => {
       expect(tspInput).toHaveTextContent("Choose a township");
     });
   });
+
+  it("resets to original values", async () => {
+    const { baseElement } = render(<RouterProvider router={router} />);
+
+    const user = userEvent.setup();
+
+    const stateInput = await screen.findByLabelText("State");
+    const cityInput = await screen.findByLabelText("City");
+    const tspInput = await screen.findByLabelText("Township");
+
+    await user.click(stateInput);
+    await waitFor(() => {
+      expect(
+        within(baseElement).getByRole("option", { name: "State2" })
+      ).toBeInTheDocument();
+    });
+    await user.click(
+      within(baseElement).getByRole("option", { name: "State2" })
+    );
+
+    await user.click(screen.getByRole("button", { name: "Reset" }));
+
+    await waitFor(() => {
+      expect(stateInput).toHaveTextContent("State1");
+      expect(cityInput).toHaveTextContent("City1");
+      expect(tspInput).toHaveTextContent("Tsp1");
+    });
+  });
 });

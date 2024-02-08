@@ -62,6 +62,9 @@ function EditBranchForm({ branch }: EditBranchFormProps) {
 
   const handleReset = () => {
     reset();
+
+    setStateID(branch.state);
+    setCityID(branch.city);
   };
 
   return (
