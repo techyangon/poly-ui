@@ -4,23 +4,33 @@ import { userEvent } from "@testing-library/user-event";
 
 import { errorHandlers } from "../../mocks/handlers";
 import { server } from "../../mocks/server";
-import Root from "../Root/Root";
 
 import BaseLayout from "./BaseLayout";
 
 import { render, screen, waitFor } from "test-utils";
 
+const routes = [
+  {
+    path: "/home",
+    element: <BaseLayout />,
+    children: [
+      {
+        path: "profile",
+        element: <div>Profile</div>,
+      },
+    ],
+  },
+  {
+    path: "/login",
+    element: <div>Login</div>,
+  },
+];
+const router = createMemoryRouter(routes, {
+  initialEntries: ["/home/profile"],
+});
+
 describe("Homepage", () => {
   it("shows username at dropdown", async () => {
-    const routes = [
-      {
-        path: "/home",
-        element: <BaseLayout />,
-      },
-    ];
-    const router = createMemoryRouter(routes, {
-      initialEntries: ["/home"],
-    });
     render(<RouterProvider router={router} />);
 
     const user = userEvent.setup();
@@ -31,31 +41,21 @@ describe("Homepage", () => {
   });
 
   it("shows navigations per user permissions", async () => {
-    const routes = [
-      {
-        path: "/home",
-        element: <BaseLayout />,
-      },
-    ];
-    const router = createMemoryRouter(routes, { initialEntries: ["/home"] });
     render(<RouterProvider router={router} />);
 
-    await screen.findByLabelText("Branches");
+    const user = userEvent.setup();
+
+    await screen.findByText("Profile");
+
+    await user.click(screen.getByRole("button", { name: "open navigation" }));
     await waitFor(() =>
-      expect(screen.queryByLabelText("Dashboard")).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole("button", { name: "Dashboard" })
+      ).not.toBeInTheDocument()
     );
   });
 
   it("toggles theme", async () => {
-    const routes = [
-      {
-        path: "/home",
-        element: <BaseLayout />,
-      },
-    ];
-    const router = createMemoryRouter(routes, {
-      initialEntries: ["/home"],
-    });
     render(<RouterProvider router={router} />);
 
     const user = userEvent.setup();
@@ -70,29 +70,6 @@ describe("Homepage", () => {
   });
 
   it("redirects to login after logout", async () => {
-    const routes = [
-      {
-        path: "/",
-        element: <Root />,
-      },
-      {
-        path: "/home",
-        element: <BaseLayout />,
-        children: [
-          {
-            path: "profile",
-            element: <div>Profile</div>,
-          },
-        ],
-      },
-      {
-        path: "/login",
-        element: <div>Login</div>,
-      },
-    ];
-    const router = createMemoryRouter(routes, {
-      initialEntries: ["/home"],
-    });
     render(<RouterProvider router={router} />);
 
     const user = userEvent.setup();
@@ -109,10 +86,6 @@ describe("Homepage", () => {
     server.use(...errorHandlers);
     const routes = [
       {
-        path: "/",
-        element: <Root />,
-      },
-      {
         path: "/home",
         element: <BaseLayout />,
         children: [
@@ -128,7 +101,7 @@ describe("Homepage", () => {
       },
     ];
     const router = createMemoryRouter(routes, {
-      initialEntries: ["/home"],
+      initialEntries: ["/home/profile"],
     });
     render(<RouterProvider router={router} />);
 
